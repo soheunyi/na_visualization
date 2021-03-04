@@ -23,7 +23,7 @@ const PositionLabel = (props) => {
   const initialPointList = [];
   const [pointList, setPointList] = React.useState(initialPointList);
 
-  const MAX_POINT_NUM = 10;
+  const MAX_POINT_NUM = 100;
 
   function appendPoint() {
     const newPointList =
@@ -44,11 +44,12 @@ const PositionLabel = (props) => {
       }}
       onClick={appendPoint}
     >
+      {/* TODO :  move pointList into PointCanvas*/}
       <PointCanvas
         draw={linearInterpolation}
         points={pointList}
         lineStyle={{ color: "black", width: 10 }}
-        style={{ width: 200, height: 100 }}
+        style={{ width: 2000, height: 200 }}
       />
       <p>{JSON.stringify(props)}</p>
       <p>{JSON.stringify(pointList)}</p>
@@ -64,7 +65,7 @@ const PositionLabel = (props) => {
           background: "hotpink",
         }}
       />
-      {pointList.map((point) => (
+      {/* {pointList.map((point) => (
         <div
           style={{
             position: "absolute",
@@ -76,7 +77,7 @@ const PositionLabel = (props) => {
             background: "hotpink",
           }}
         />
-      ))}
+      ))} */}
     </div>
   );
 };
