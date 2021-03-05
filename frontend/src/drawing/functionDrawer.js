@@ -1,1 +1,1 @@
-import linearInterpolation from "./linearInterpolation";
+import drawFunctionPoints from "./drawFunctionPoints";

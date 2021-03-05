@@ -1,9 +1,16 @@
-const linearInterpolation = (ctx, points, style) => {
+const drawFunctionPoints = (ctx, points, style) => {
   //   console.log("inner", points);
   const { color = "black", width = 1 } = style;
   // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-  points.sort((a, b) => (a.x > b.x ? 1 : -1));
+  function sort_function(a, b) {
+    if (a.x > b.x) return 1;
+    if (a.x < b.x) return -1;
+    if (a.y > b.y) return 1;
+    if (a.y < b.y) return -1;
+  }
+  points.sort(sort_function);
+  console.log(points);
 
   if (points.length > 1) {
     ctx.beginPath();
@@ -21,4 +28,4 @@ const linearInterpolation = (ctx, points, style) => {
   }
 };
 
-export default linearInterpolation;
+export default drawFunctionPoints;

@@ -1,36 +1,44 @@
 import React, { useState, useEffect, useRef } from "react";
 
-function drawCoordinates(ctx, x, y) {
-  const pointSize = 10;
+function drawCoordinates(ctx, x, y, pointStyle) {
+  const { color = "#ff2626", pointSize = 10 } = pointStyle;
   ctx.beginPath();
-  ctx.fillStyle = "#ff2626"; // Red color
+  ctx.fillStyle = color;
   ctx.arc(x, y, pointSize, 0, 2 * Math.PI);
   ctx.fill();
 }
 
-const PointCanvas = (props) => {
+function PointCanvas(props) {
   const canvasRef = useRef(null);
-  const { draw, points, lineStyle, style, ...rest } = props;
+  const {
+    draw,
+    pathPoints,
+    points = [],
+    pointStyle,
+    lineStyle,
+    canvasStyle,
+    ...rest
+  } = props;
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-    draw(context, points, lineStyle);
-    points.forEach((point) => {
-      drawCoordinates(context, point.x, point.y);
+    draw(context, pathPoints, lineStyle);
+    points.map((point) => {
+      drawCoordinates(context, point.x, point.y, pointStyle);
     });
   }, [points]);
 
   return (
     <canvas
       ref={canvasRef}
-      width={style.width}
-      height={style.height}
+      width={canvasStyle.width}
+      height={canvasStyle.height}
       {...props}
     />
   );
-};
+}
 
 export default PointCanvas;

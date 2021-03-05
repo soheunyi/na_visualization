@@ -3,7 +3,10 @@ import ReactDOM from "react-dom";
 import ReactCursorPosition from "react-cursor-position";
 import CronCanvas from "./canvas/cronCanvas";
 import animatedCircleDraw from "./drawing/animatedCircle";
-import linearInterpolation from "./drawing/linearInterpolation";
+import drawFunctionPoints from "./drawing/drawFunctionPoints";
+import Draggable from "./components/floatingPoint";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
 import "./styles.css";
 import PointCanvas from "./canvas/pointCanvas";
@@ -18,7 +21,14 @@ const PositionLabel = (props) => {
     isActive = false,
     isPositionOutside = false,
     position: { x = 0, y = 0 } = {},
+    style: { pointSize, lineWidth },
   } = props;
+
+  const initialFloatingPointsCoordinates = [];
+  const [
+    floatingPointsCoordinates,
+    setFloatingPointsCoordinates,
+  ] = React.useState(initialFloatingPointsCoordinates);
 
   const initialPointList = [];
   const [pointList, setPointList] = React.useState(initialPointList);
@@ -44,12 +54,15 @@ const PositionLabel = (props) => {
       }}
       onClick={appendPoint}
     >
-      {/* TODO :  move pointList into PointCanvas*/}
+      <FloatingPoint></FloatingPoint>
+
       <PointCanvas
-        draw={linearInterpolation}
-        points={pointList}
-        lineStyle={{ color: "black", width: 10 }}
-        style={{ width: 2000, height: 200 }}
+        draw={drawFunctionPoints}
+        pathPoints={pointList}
+        // points={pointList}
+        lineStyle={{ color: "black", width: lineWidth }}
+        pointStyle={{ color: "red", pointSize: pointSize }}
+        canvasStyle={{ width: 1600, height: 500 }}
       />
       <p>{JSON.stringify(props)}</p>
       <p>{JSON.stringify(pointList)}</p>
@@ -58,38 +71,25 @@ const PositionLabel = (props) => {
         style={{
           position: "absolute",
           borderRadius: "100%",
-          left: x - 10,
-          top: y - 10,
-          width: 20,
-          height: 20,
+          left: x - pointSize,
+          top: y - pointSize,
+          width: 2 * pointSize,
+          height: 2 * pointSize,
           background: "hotpink",
         }}
       />
-      {/* {pointList.map((point) => (
-        <div
-          style={{
-            position: "absolute",
-            borderRadius: "100%",
-            left: point.x - 10,
-            top: point.y - 10,
-            width: 20,
-            height: 20,
-            background: "hotpink",
-          }}
-        />
-      ))} */}
     </div>
   );
 };
 
 function App() {
   return (
-    <div>
-      <CronCanvas draw={animatedCircleDraw} />
+    <DndProvider backend={HTML5Backend}>
+      {/* <CronCanvas draw={animatedCircleDraw} /> */}
       <ReactCursorPosition>
-        <PositionLabel />
+        <PositionLabel style={{ pointSize: 10, lineWidth: 5 }} />
       </ReactCursorPosition>
-    </div>
+    </DndProvider>
   );
 }
 

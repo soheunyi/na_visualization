@@ -1,5 +1,5 @@
 {
-  "name": "na_visualization",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,9 +7,13 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "prop-types": "^15.7.2",
+    "python-shell": "^2.0.3",
     "react": "^17.0.1",
     "react-cursor-position": "^3.0.3",
+    "react-dnd": "^13.1.1",
+    "react-dnd-html5-backend": "^12.1.1",
     "react-dom": "^17.0.1",
+    "react-draggable": "^4.4.3",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.0.1"
   },
