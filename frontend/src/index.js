@@ -5,12 +5,14 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
 import "./styles.css";
-import { PositionLabel } from "./PositionLabel";
+import fetchPlottingPoints from "./api/fetchPlottingPoints";
 import PositionSetter from "./pointSetter";
 
 function App() {
   return (
     <DndProvider backend={HTML5Backend}>
+      {fetchPlottingPoints()}
+
       <ReactCursorPosition>
         <PositionSetter style={{ pointSize: 10, lineWidth: 5 }} />
       </ReactCursorPosition>
