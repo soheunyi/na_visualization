@@ -10,7 +10,7 @@ const drawFunctionPoints = (ctx, points, style) => {
     if (a.y < b.y) return -1;
   }
   points.sort(sort_function);
-  console.log(points);
+  // console.log(points);
 
   if (points.length > 1) {
     ctx.beginPath();

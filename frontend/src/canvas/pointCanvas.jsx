@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import FloatingPoint from "../components/floatingPoint";
+import "./pointCanvas.css";
 
 function drawCoordinates(ctx, x, y, pointStyle) {
   const { color = "#ff2626", pointSize = 10 } = pointStyle;
@@ -36,6 +38,7 @@ function PointCanvas(props) {
       ref={canvasRef}
       width={canvasStyle.width}
       height={canvasStyle.height}
+      position="absolute"
       {...props}
     />
   );
