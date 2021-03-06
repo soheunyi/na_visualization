@@ -12,7 +12,6 @@ function App() {
   return (
     <DndProvider backend={HTML5Backend}>
       <ReactCursorPosition>
-        {/* <PositionLabel style={{ pointSize: 10, lineWidth: 5 }} /> */}
         <PositionSetter style={{ pointSize: 10, lineWidth: 5 }} />
       </ReactCursorPosition>
     </DndProvider>

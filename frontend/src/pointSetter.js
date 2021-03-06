@@ -9,6 +9,7 @@ class PositionSetter extends React.Component {
     super(props);
     this.handleDrag = this.handleDrag.bind(this);
     this.appendPoint = this.appendPoint.bind(this);
+
     this.state = { pointList: [] };
   }
 
@@ -55,12 +56,13 @@ class PositionSetter extends React.Component {
           return (
             <FloatingPoint
               handleDrag={this.handleDrag}
+              deletePoint={this.deletePoint}
               point={point}
               pointStyle={{ pointSize: 10, color: "yellow" }}
             />
           );
         })}
-        {/* {console.log(this.state.pointList.map((point) => point.position))} */}
+
         <PointCanvas
           draw={drawFunctionPoints}
           pathPoints={this.state.pointList.map((point) => point.position)}

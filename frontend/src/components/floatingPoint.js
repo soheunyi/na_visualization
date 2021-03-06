@@ -8,12 +8,12 @@ class FloatingPoint extends React.Component {
   }
   handleDrag = (event, dragData) => {
     const { key, position } = this.props.point;
-    console.log(this.state);
+
     const newPosition = {
       x: this.state.initialPosition.x + dragData.x,
       y: this.state.initialPosition.y + dragData.y,
     };
-    console.log(dragData);
+
     const newPoint = { key, position: newPosition };
     this.props.handleDrag(newPoint);
   };
@@ -21,9 +21,6 @@ class FloatingPoint extends React.Component {
   render() {
     const { pointSize, color } = this.props.pointStyle;
 
-    // console.log("yellow");
-    // console.log(this.props.point);
-    // console.log(x, y);
     return (
       <Draggable onDrag={this.handleDrag}>
         <div

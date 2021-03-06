@@ -1,7 +1,5 @@
 const drawFunctionPoints = (ctx, points, style) => {
-  //   console.log("inner", points);
   const { color = "black", width = 1 } = style;
-  // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
   function sort_function(a, b) {
     if (a.x > b.x) return 1;
@@ -10,7 +8,6 @@ const drawFunctionPoints = (ctx, points, style) => {
     if (a.y < b.y) return -1;
   }
   points.sort(sort_function);
-  // console.log(points);
 
   if (points.length > 1) {
     ctx.beginPath();
