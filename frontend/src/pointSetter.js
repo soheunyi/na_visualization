@@ -2,10 +2,8 @@ import React from "react";
 import drawFunctionPoints from "./drawing/drawFunctionPoints";
 import FloatingPoint from "./components/floatingPoint";
 import PointCanvas from "./canvas/pointCanvas";
-import fetchPoints from "./api/fetchPoints";
 import socketio from "socket.io-client";
-import sendPoints from "./api/sendPoints";
-import { arrayToPoints } from "./api/parsePoints";
+import { arrayToPoints, pointsToArray } from "./api/parsePoints";
 import _ from "lodash";
 
 class PositionSetter extends React.Component {
@@ -13,7 +11,11 @@ class PositionSetter extends React.Component {
     super(props);
     this.handleDrag = this.handleDrag.bind(this);
     this.appendPoint = this.appendPoint.bind(this);
-    this.state = { pivotalPoints: [], pathPoints: [] };
+    this.state = {
+      pivotalPoints: [],
+      pathPoints: [],
+      animatedPivotalPoints: [],
+    };
   }
 
   componentDidMount() {
@@ -21,8 +23,6 @@ class PositionSetter extends React.Component {
 
     this.socket = socketio.connect(apiUrl);
     this.socket.on("path points", (newPathArray) => {
-      console.log(arrayToPoints(newPathArray));
-
       this.setState(() => ({
         pathPoints: arrayToPoints(newPathArray),
       }));
@@ -33,8 +33,8 @@ class PositionSetter extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (!_.isEqual(prevState.pivotalPoints, this.state.pivotalPoints)) {
-      sendPoints(this.state.pivotalPoints);
-      console.log(this.state.pivotalPoints);
+      const positionArray = pointsToArray(this.state.pivotalPoints);
+      this.socket.emit("pivotal points", positionArray);
     }
   }
 
@@ -80,7 +80,7 @@ class PositionSetter extends React.Component {
         {this.state.pivotalPoints.map((point) => {
           return (
             <FloatingPoint
-              handleDrag={_.throttle(this.handleDrag, 10000)}
+              handleDrag={this.handleDrag}
               deletePoint={this.deletePoint}
               point={point}
               pointStyle={{ pointSize: 10, color: "yellow" }}
@@ -94,7 +94,7 @@ class PositionSetter extends React.Component {
           points={this.state.pivotalPoints}
           lineStyle={{ color: "black", width: lineWidth }}
           pointStyle={{ color: "red", pointSize: pointSize }}
-          canvasStyle={{ width: 1600, height: 500 }}
+          canvasStyle={{ width: 1600, height: 1000 }}
         />
 
         <p>{JSON.stringify(this.props)}</p>
