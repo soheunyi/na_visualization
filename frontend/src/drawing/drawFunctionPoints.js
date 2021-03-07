@@ -9,6 +9,7 @@ const drawFunctionPoints = (ctx, points, style) => {
   }
   points.sort(sort_function);
 
+  console.log("draw func", points);
   if (points.length > 1) {
     ctx.beginPath();
     points.map((point, index) => {

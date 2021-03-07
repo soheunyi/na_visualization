@@ -3,26 +3,38 @@ import drawFunctionPoints from "./drawing/drawFunctionPoints";
 import FloatingPoint from "./components/floatingPoint";
 import PointCanvas from "./canvas/pointCanvas";
 import fetchPoints from "./api/fetchPoints";
+import socketio from "socket.io-client";
 import sendPoints from "./api/sendPoints";
 import { arrayToPoints } from "./api/parsePoints";
+import _ from "lodash";
 
 class PositionSetter extends React.Component {
   constructor(props) {
     super(props);
     this.handleDrag = this.handleDrag.bind(this);
     this.appendPoint = this.appendPoint.bind(this);
-
     this.state = { pivotalPoints: [], pathPoints: [] };
   }
 
-  componentDidUpdate(_, prevState) {
-    if (prevState.pivotalPoints !== this.state.pivotalPoints) {
+  componentDidMount() {
+    const apiUrl = "http://localhost:5000/";
+
+    this.socket = socketio.connect(apiUrl);
+    this.socket.on("path points", (newPathArray) => {
+      console.log(arrayToPoints(newPathArray));
+
+      this.setState(() => ({
+        pathPoints: arrayToPoints(newPathArray),
+      }));
+    });
+  }
+
+  componentWillUnmount() {}
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!_.isEqual(prevState.pivotalPoints, this.state.pivotalPoints)) {
       sendPoints(this.state.pivotalPoints);
-      fetchPoints().on("path points", (newPathArray) => {
-        this.setState(() => ({
-          pathPoints: arrayToPoints(newPathArray),
-        }));
-      });
+      console.log(this.state.pivotalPoints);
     }
   }
 
@@ -68,7 +80,7 @@ class PositionSetter extends React.Component {
         {this.state.pivotalPoints.map((point) => {
           return (
             <FloatingPoint
-              handleDrag={this.handleDrag}
+              handleDrag={_.throttle(this.handleDrag, 10000)}
               deletePoint={this.deletePoint}
               point={point}
               pointStyle={{ pointSize: 10, color: "yellow" }}

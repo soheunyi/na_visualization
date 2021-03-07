@@ -16,10 +16,11 @@ def piecewise_sine_curve(x_arr, nodes):
                           (nodes[func_index + 1] - nodes[func_index]))
 
 
-def wavy_interpolation(points, clock, path_points_num=10000):
+def wavy_interpolation(points, amp, clock, path_points_num=100):
     x_arr, linear_y = linear_interpolation(points, path_points_num).T
+    points = np.array(points)
     points_x = points[:, 0]
-    amp = np.sin(clock)
-    sine_y = amp * piecewise_sine_curve(x_arr, points_x)
+
+    sine_y = amp * np.sin(clock) * piecewise_sine_curve(x_arr, points_x)
 
     return np.array([x_arr, sine_y + linear_y]).T
