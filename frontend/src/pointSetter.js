@@ -2,7 +2,9 @@ import React from "react";
 import drawFunctionPoints from "./drawing/drawFunctionPoints";
 import FloatingPoint from "./components/floatingPoint";
 import PointCanvas from "./canvas/pointCanvas";
-import { render } from "react-dom";
+import fetchPoints from "./api/fetchPoints";
+import sendPoints from "./api/sendPoints";
+import { arrayToPoints } from "./api/parsePoints";
 
 class PositionSetter extends React.Component {
   constructor(props) {
@@ -10,11 +12,22 @@ class PositionSetter extends React.Component {
     this.handleDrag = this.handleDrag.bind(this);
     this.appendPoint = this.appendPoint.bind(this);
 
-    this.state = { pointList: [] };
+    this.state = { pivotalPoints: [], pathPoints: [] };
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.pivotalPoints !== this.state.pivotalPoints) {
+      sendPoints(this.state.pivotalPoints);
+      fetchPoints().on("path points", (newPathArray) => {
+        this.setState(() => ({
+          pathPoints: arrayToPoints(newPathArray),
+        }));
+      });
+    }
   }
 
   handleDrag(draggedPoint) {
-    const newPointList = this.state.pointList.map((point) => {
+    const newPivotalPoints = this.state.pivotalPoints.map((point) => {
       if (point.key !== draggedPoint.key) {
         return point;
       } else {
@@ -22,19 +35,19 @@ class PositionSetter extends React.Component {
       }
     });
 
-    this.setState({ pointList: newPointList });
+    this.setState({ pivotalPoints: newPivotalPoints });
   }
 
   appendPoint() {
     const MAX_POINT_NUM = 100;
     const key = Math.random().toString(36);
     const { position } = this.props;
-    const newPointList =
-      this.state.pointList.length < MAX_POINT_NUM
-        ? this.state.pointList.concat({ key, position })
-        : this.state.pointList;
+    const newPivotalPoints =
+      this.state.pivotalPoints.length < MAX_POINT_NUM
+        ? this.state.pivotalPoints.concat({ key, position })
+        : this.state.pivotalPoints;
 
-    this.setState({ pointList: newPointList });
+    this.setState({ pivotalPoints: newPivotalPoints });
   }
 
   render() {
@@ -52,7 +65,7 @@ class PositionSetter extends React.Component {
         }}
         onDoubleClick={this.appendPoint}
       >
-        {this.state.pointList.map((point) => {
+        {this.state.pivotalPoints.map((point) => {
           return (
             <FloatingPoint
               handleDrag={this.handleDrag}
@@ -65,15 +78,15 @@ class PositionSetter extends React.Component {
 
         <PointCanvas
           draw={drawFunctionPoints}
-          pathPoints={this.state.pointList.map((point) => point.position)}
-          points={this.state.pointList.map((point) => point.position)}
+          pathPoints={this.state.pathPoints}
+          points={this.state.pivotalPoints}
           lineStyle={{ color: "black", width: lineWidth }}
           pointStyle={{ color: "red", pointSize: pointSize }}
           canvasStyle={{ width: 1600, height: 500 }}
         />
 
         <p>{JSON.stringify(this.props)}</p>
-        <p>{JSON.stringify(this.state.pointList)}</p>
+        <p>{JSON.stringify(this.state.pivotalPoints)}</p>
       </div>
     );
   }

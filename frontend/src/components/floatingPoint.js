@@ -6,8 +6,8 @@ class FloatingPoint extends React.Component {
     super(props);
     this.state = { initialPosition: this.props.point.position };
   }
-  handleDrag = (event, dragData) => {
-    const { key, position } = this.props.point;
+  handleDrag = (_event, dragData) => {
+    const { key } = this.props.point;
 
     const newPosition = {
       x: this.state.initialPosition.x + dragData.x,

@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import FloatingPoint from "../components/floatingPoint";
+import React, { useEffect, useRef } from "react";
 import "./pointCanvas.css";
 
 function drawCoordinates(ctx, x, y, pointStyle) {
