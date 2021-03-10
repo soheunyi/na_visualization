@@ -15,10 +15,8 @@ def main():
 
 @socketio.on('pivotal points')
 def get_pivotal_points(json):
-
-    print('received pviotal points: ' + str(json))
-    json = wavy_interpolation(json, 100, 1, path_points_num=250).tolist()
-    socketio.emit('path points', json)
+    socketio.emit('path points',
+                  wavy_interpolation(json, 100, 1, path_points_num=100).tolist())
 
 
 if __name__ == '__main__':

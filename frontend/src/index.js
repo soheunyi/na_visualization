@@ -5,13 +5,12 @@ import { DndProvider } from "react-dnd";
 
 import "./styles.css";
 import PositionSetter from "./pointSetter";
-import FunctionalPositionSetter from "./functionalPointSetter";
 
 function App() {
   return (
     <DndProvider backend={HTML5Backend}>
       <ReactCursorPosition>
-        <FunctionalPositionSetter style={{ pointSize: 10, lineWidth: 5 }} />
+        <PositionSetter style={{ pointSize: 10, lineWidth: 5 }} />
       </ReactCursorPosition>
     </DndProvider>
   );

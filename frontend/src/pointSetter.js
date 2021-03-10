@@ -1,45 +1,38 @@
-import React from "react";
+import React, { useCallback, useRef, useEffect, useState } from "react";
 import drawFunctionPoints from "./drawing/drawFunctionPoints";
 import FloatingPoint from "./components/floatingPoint";
 import PointCanvas from "./canvas/pointCanvas";
 import socketio from "socket.io-client";
+import { Polynomial, PolynomialPiece } from "./formula/polynomial";
 import { arrayToPoints, pointsToArray } from "./api/parsePoints";
 import _ from "lodash";
 
-class PositionSetter extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleDrag = this.handleDrag.bind(this);
-    this.appendPoint = this.appendPoint.bind(this);
-    this.state = {
-      pivotalPoints: [],
-      pathPoints: [],
-      animatedPivotalPoints: [],
-    };
-  }
+export default function PositionSetter(props) {
+  const [pivotalPoints, setPivotalPoints] = useState([]);
+  const [pathPoints, setPathPoints] = useState([]);
+  const [animatedPivotalPoints, setAnimatedPivotalPoints] = useState([]);
+  const [socket, setSocket] = useState(0);
+  const apiUrl = "http://localhost:5000";
 
-  componentDidMount() {
-    const apiUrl = "http://localhost:5000/";
-
-    this.socket = socketio.connect(apiUrl);
-    this.socket.on("path points", (newPathArray) => {
-      this.setState(() => ({
-        pathPoints: arrayToPoints(newPathArray),
-      }));
+  useEffect(() => {
+    const tmp = new PolynomialPiece([1, 0.01, 0.001], {
+      lower: 100,
+      upper: 200,
     });
-  }
+    socketio.connect(apiUrl).on("path points", (newPathArray) =>
+      // setPathPoints(arrayToPoints(newPathArray))
+      setPathPoints(tmp.calculatePlotPoints(10))
+    );
+  }, []);
 
-  componentWillUnmount() {}
+  useEffect(() => {
+    const positionArray = pointsToArray(pivotalPoints);
+    socketio.connect(apiUrl).emit("pivotal points", positionArray);
+  }, [pivotalPoints]);
 
-  componentDidUpdate(prevProps, prevState) {
-    if (!_.isEqual(prevState.pivotalPoints, this.state.pivotalPoints)) {
-      const positionArray = pointsToArray(this.state.pivotalPoints);
-      this.socket.emit("pivotal points", positionArray);
-    }
-  }
-
-  handleDrag(draggedPoint) {
-    const newPivotalPoints = this.state.pivotalPoints.map((point) => {
+  const throttledHandleDragRef = useRef();
+  throttledHandleDragRef.current = (draggedPoint) => {
+    const newPivotalPoints = pivotalPoints.map((point) => {
       if (point.key !== draggedPoint.key) {
         return point;
       } else {
@@ -47,60 +40,58 @@ class PositionSetter extends React.Component {
       }
     });
 
-    this.setState({ pivotalPoints: newPivotalPoints });
-  }
+    setPivotalPoints(newPivotalPoints);
+  };
 
-  appendPoint() {
+  const throttledHandleDrag = useCallback(
+    _.throttle((...args) => throttledHandleDragRef.current(...args), 100),
+    []
+  );
+
+  const appendPoint = () => {
     const MAX_POINT_NUM = 100;
     const key = Math.random().toString(36);
-    const { position } = this.props;
+    const { position } = props;
     const newPivotalPoints =
-      this.state.pivotalPoints.length < MAX_POINT_NUM
-        ? this.state.pivotalPoints.concat({ key, position })
-        : this.state.pivotalPoints;
+      pivotalPoints.length < MAX_POINT_NUM
+        ? pivotalPoints.concat({ key, position })
+        : pivotalPoints;
 
-    this.setState({ pivotalPoints: newPivotalPoints });
-  }
+    setPivotalPoints(newPivotalPoints);
+  };
 
-  render() {
-    const {
-      style: { pointSize, lineWidth },
-    } = this.props;
+  const { lineWidth, pointSize } = props;
+  return (
+    <div
+      style={{
+        position: "absolute",
+        height: "100%",
+        width: "100%",
+        background: "skyblue",
+      }}
+      onDoubleClick={appendPoint}
+    >
+      {pivotalPoints.map((point) => {
+        return (
+          <FloatingPoint
+            handleDrag={throttledHandleDrag}
+            point={point}
+            pointStyle={{ pointSize: 10, color: "yellow" }}
+          />
+        );
+      })}
 
-    return (
-      <div
-        style={{
-          position: "absolute",
-          height: "100%",
-          width: "100%",
-          background: "skyblue",
-        }}
-        onDoubleClick={this.appendPoint}
-      >
-        {this.state.pivotalPoints.map((point) => {
-          return (
-            <FloatingPoint
-              handleDrag={this.handleDrag}
-              deletePoint={this.deletePoint}
-              point={point}
-              pointStyle={{ pointSize: 10, color: "yellow" }}
-            />
-          );
-        })}
+      <PointCanvas
+        draw={drawFunctionPoints}
+        pathPoints={pathPoints}
+        points={pivotalPoints}
+        lineStyle={{ color: "black", width: lineWidth }}
+        pointStyle={{ color: "red", pointSize: pointSize }}
+        canvasStyle={{ width: 1600, height: 1000 }}
+      />
 
-        <PointCanvas
-          draw={drawFunctionPoints}
-          pathPoints={this.state.pathPoints}
-          points={this.state.pivotalPoints}
-          lineStyle={{ color: "black", width: lineWidth }}
-          pointStyle={{ color: "red", pointSize: pointSize }}
-          canvasStyle={{ width: 1600, height: 1000 }}
-        />
-
-        <p>{JSON.stringify(this.props)}</p>
-        <p>{JSON.stringify(this.state.pivotalPoints)}</p>
-      </div>
-    );
-  }
+      <p>{JSON.stringify(props)}</p>
+      <p>{JSON.stringify(pivotalPoints)}</p>
+    </div>
+  );
 }
-export default PositionSetter;

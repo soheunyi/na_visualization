@@ -1,43 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import Draggable from "react-draggable";
+import _ from "lodash";
 
-class FloatingPoint extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { initialPosition: this.props.point.position };
-  }
-  handleDrag = (_event, dragData) => {
-    const { key } = this.props.point;
+export default function FloatingPoint(props) {
+  const [initialPosition, _setInitialPosition] = useState(props.point.position);
+
+  const handleDrag = (_event, dragData) => {
+    const { key } = props.point;
 
     const newPosition = {
-      x: this.state.initialPosition.x + dragData.x,
-      y: this.state.initialPosition.y + dragData.y,
+      x: initialPosition.x + dragData.x,
+      y: initialPosition.y + dragData.y,
     };
 
     const newPoint = { key, position: newPosition };
-    this.props.handleDrag(newPoint);
+    props.handleDrag(newPoint);
   };
 
-  render() {
-    const { pointSize, color } = this.props.pointStyle;
-
-    return (
-      <Draggable onDrag={this.handleDrag}>
-        <div
-          className="drag-wrapper"
-          style={{
-            position: "absolute",
-            left: this.state.initialPosition.x - pointSize,
-            top: this.state.initialPosition.y - pointSize,
-            width: 2 * pointSize,
-            height: 2 * pointSize,
-            borderRadius: "100%",
-            background: color,
-          }}
-        ></div>
-      </Draggable>
-    );
-  }
+  const { pointSize, color } = props.pointStyle;
+  return (
+    <Draggable onDrag={handleDrag}>
+      <div
+        className="drag-wrapper"
+        style={{
+          position: "absolute",
+          left: initialPosition.x - pointSize,
+          top: initialPosition.y - pointSize,
+          width: 2 * pointSize,
+          height: 2 * pointSize,
+          borderRadius: "100%",
+          background: color,
+        }}
+      ></div>
+    </Draggable>
+  );
 }
-
-export default FloatingPoint;
