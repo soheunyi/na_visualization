@@ -14,17 +14,22 @@ export default function PositionSetter(props) {
   const [socket, setSocket] = useState(0);
   const apiUrl = "http://localhost:5000";
 
+  const connection = useRef(null);
+
   useEffect(() => {
-    socketio.connect(apiUrl).on(
+    connection.current = socketio.connect(apiUrl);
+    connection.current.on(
       "path points",
       (newPathArray) => setPathPoints(arrayToPoints(newPathArray))
       // setPathPoints(tmp.calculatePlotPoints(10))
     );
+
+    return () => connection.current.disconnect();
   }, []);
 
   useEffect(() => {
     const positionArray = pointsToArray(pivotalPoints);
-    socketio.connect(apiUrl).emit("pivotal points", positionArray);
+    connection.current.emit("pivotal points", positionArray);
   }, [pivotalPoints]);
 
   const throttledHandleDragRef = useRef();
@@ -41,7 +46,7 @@ export default function PositionSetter(props) {
   };
 
   const throttledHandleDrag = useCallback(
-    _.throttle((...args) => throttledHandleDragRef.current(...args), 100),
+    _.throttle((...args) => throttledHandleDragRef.current(...args), 10),
     []
   );
 
