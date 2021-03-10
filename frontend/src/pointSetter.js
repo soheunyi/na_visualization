@@ -3,7 +3,7 @@ import drawFunctionPoints from "./drawing/drawFunctionPoints";
 import FloatingPoint from "./components/floatingPoint";
 import PointCanvas from "./canvas/pointCanvas";
 import socketio from "socket.io-client";
-import { Polynomial, PolynomialPiece } from "./formula/polynomial";
+// import { Polynomial, PolynomialPiece } from "./formula/polynomial";
 import { arrayToPoints, pointsToArray } from "./api/parsePoints";
 import _ from "lodash";
 
@@ -15,13 +15,10 @@ export default function PositionSetter(props) {
   const apiUrl = "http://localhost:5000";
 
   useEffect(() => {
-    const tmp = new PolynomialPiece([1, 0.01, 0.001], {
-      lower: 100,
-      upper: 200,
-    });
-    socketio.connect(apiUrl).on("path points", (newPathArray) =>
-      // setPathPoints(arrayToPoints(newPathArray))
-      setPathPoints(tmp.calculatePlotPoints(10))
+    socketio.connect(apiUrl).on(
+      "path points",
+      (newPathArray) => setPathPoints(arrayToPoints(newPathArray))
+      // setPathPoints(tmp.calculatePlotPoints(10))
     );
   }, []);
 
