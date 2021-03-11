@@ -11,17 +11,14 @@ export default function PositionSetter(props) {
   const [pivotalPoints, setPivotalPoints] = useState([]);
   const [pathPoints, setPathPoints] = useState([]);
   const [animatedPivotalPoints, setAnimatedPivotalPoints] = useState([]);
-  const [socket, setSocket] = useState(0);
   const apiUrl = "http://localhost:5000";
 
   const connection = useRef(null);
 
   useEffect(() => {
     connection.current = socketio.connect(apiUrl);
-    connection.current.on(
-      "path points",
-      (newPathArray) => setPathPoints(arrayToPoints(newPathArray))
-      // setPathPoints(tmp.calculatePlotPoints(10))
+    connection.current.on("path points", (newPathArray) =>
+      setPathPoints(arrayToPoints(newPathArray))
     );
 
     return () => connection.current.disconnect();

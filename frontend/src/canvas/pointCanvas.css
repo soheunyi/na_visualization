@@ -5,6 +5,9 @@
 #overlay {
   position: absolute;
 }
+
 canvas {
+  position: "absolute";
   border: 1px solid black;
+  background-color: rgb(24, 90, 145);
 }

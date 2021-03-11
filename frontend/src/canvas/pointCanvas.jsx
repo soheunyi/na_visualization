@@ -37,7 +37,6 @@ function PointCanvas(props) {
       ref={canvasRef}
       width={canvasStyle.width}
       height={canvasStyle.height}
-      position="absolute"
       {...props}
     />
   );
