@@ -3,14 +3,12 @@ import drawFunctionPoints from "./drawing/drawFunctionPoints";
 import FloatingPoint from "./components/floatingPoint";
 import PointCanvas from "./canvas/pointCanvas";
 import socketio from "socket.io-client";
-// import { Polynomial, PolynomialPiece } from "./formula/polynomial";
 import { arrayToPoints, pointsToArray } from "./api/parsePoints";
 import _ from "lodash";
 
 export default function PositionSetter(props) {
   const [pivotalPoints, setPivotalPoints] = useState([]);
   const [pathPoints, setPathPoints] = useState([]);
-  const [animatedPivotalPoints, setAnimatedPivotalPoints] = useState([]);
   const apiUrl = "http://localhost:5000";
 
   const connection = useRef(null);
@@ -59,7 +57,7 @@ export default function PositionSetter(props) {
     setPivotalPoints(newPivotalPoints);
   };
 
-  const { lineWidth, pointSize } = props;
+  const { animated, animation, lineWidth, pointSize } = props;
   return (
     <div
       style={{
@@ -73,6 +71,8 @@ export default function PositionSetter(props) {
       {pivotalPoints.map((point) => {
         return (
           <FloatingPoint
+            animated={animated}
+            animation={animation}
             handleDrag={throttledHandleDrag}
             point={point}
             pointStyle={{ pointSize: 10, color: "yellow" }}
