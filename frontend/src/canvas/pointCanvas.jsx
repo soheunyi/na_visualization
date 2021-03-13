@@ -18,7 +18,6 @@ function PointCanvas(props) {
     pointStyle,
     lineStyle,
     canvasStyle,
-    ...rest
   } = props;
 
   useEffect(() => {

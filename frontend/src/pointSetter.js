@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import drawFunctionPoints from "./drawing/drawFunctionPoints";
 import FloatingPoint from "./components/floatingPoint";
 import PointCanvas from "./canvas/pointCanvas";
@@ -17,6 +17,7 @@ export default function PositionSetter(props) {
 
   useEffect(() => {
     connection.current = socketio.connect(apiUrl);
+    console.log(connection.current.id);
     connection.current.on("path points", (newPathArray) =>
       setPathPoints(arrayToPoints(newPathArray))
     );
