@@ -21,11 +21,14 @@ export default function PositionSetter(props) {
       setPathPoints(arrayToPoints(newPathArray))
     );
 
-    setInterval(() => {
+    const interval = setInterval(() => {
       setPivotalPoints([...pivotalPoints]);
     }, 1000 / 60);
 
-    return () => connection.current.disconnect();
+    return () => {
+      connection.current.disconnect();
+      clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {
