@@ -6,8 +6,10 @@ import socketio from "socket.io-client";
 import { arrayToPoints, pointsToArray } from "./api/parsePoints";
 import _ from "lodash";
 
+const pivotalPoints = [];
+
 export default function PositionSetter(props) {
-  const [pivotalPoints, setPivotalPoints] = useState([]);
+  const [pp, setPivotalPoints] = useState([]);
   const [pathPoints, setPathPoints] = useState([]);
   const apiUrl = "http://localhost:5000";
 
@@ -19,25 +21,25 @@ export default function PositionSetter(props) {
       setPathPoints(arrayToPoints(newPathArray))
     );
 
+    setInterval(() => {
+      setPivotalPoints([...pivotalPoints]);
+    }, 1000 / 60);
+
     return () => connection.current.disconnect();
   }, []);
 
   useEffect(() => {
-    const positionArray = pointsToArray(pivotalPoints);
+    const positionArray = pointsToArray(pp);
     connection.current.emit("pivotal points", positionArray);
-  }, [pivotalPoints]);
+  }, [pp]);
 
   const throttledHandleDragRef = useRef();
   throttledHandleDragRef.current = (draggedPoint) => {
-    const newPivotalPoints = pivotalPoints.map((point) => {
-      if (point.key !== draggedPoint.key) {
-        return point;
-      } else {
-        return draggedPoint;
-      }
-    });
-    console.log("new pivotal points", newPivotalPoints);
-    setPivotalPoints(newPivotalPoints);
+    const updateIndex = _.findIndex(
+      pivotalPoints,
+      (p) => p.key === draggedPoint.key
+    );
+    pivotalPoints[updateIndex] = draggedPoint;
   };
 
   const throttledHandleDrag = useCallback(
@@ -49,12 +51,9 @@ export default function PositionSetter(props) {
     const MAX_POINT_NUM = 100;
     const key = Math.random().toString(36);
     const { position } = props;
-    const newPivotalPoints =
-      pivotalPoints.length < MAX_POINT_NUM
-        ? pivotalPoints.concat({ key, position })
-        : pivotalPoints;
-
-    setPivotalPoints(newPivotalPoints);
+    // const newPivotalPoints =
+    //   pp.length < MAX_POINT_NUM ? pp.concat({ key, position }) : pp;
+    pivotalPoints.push({ position, key });
   };
 
   const { animated, animation, lineWidth, pointSize } = props;
@@ -71,7 +70,7 @@ export default function PositionSetter(props) {
       }}
       onDoubleClick={appendPoint}
     >
-      {pivotalPoints.map((point) => {
+      {pp.map((point) => {
         return (
           <FloatingPoint
             animated={animated}
@@ -86,14 +85,14 @@ export default function PositionSetter(props) {
       <PointCanvas
         draw={drawFunctionPoints}
         pathPoints={pathPoints}
-        points={pivotalPoints}
+        points={pp}
         lineStyle={{ color: "black", width: lineWidth }}
         pointStyle={{ color: "red", pointSize: pointSize }}
         canvasStyle={{ width: 1600, height: 1000 }}
       />
 
       <p>{JSON.stringify(props)}</p>
-      <p>{JSON.stringify(pivotalPoints)}</p>
+      <p>{JSON.stringify(pp)}</p>
     </div>
   );
 }
