@@ -36,7 +36,7 @@ export default function PositionSetter(props) {
         return draggedPoint;
       }
     });
-
+    console.log("new pivotal points", newPivotalPoints);
     setPivotalPoints(newPivotalPoints);
   };
 
@@ -58,6 +58,9 @@ export default function PositionSetter(props) {
   };
 
   const { animated, animation, lineWidth, pointSize } = props;
+
+  const animationFrameCount = Math.floor(Date.now() / 200);
+
   return (
     <div
       style={{
@@ -73,13 +76,13 @@ export default function PositionSetter(props) {
           <FloatingPoint
             animated={animated}
             animation={animation}
-            handleDrag={throttledHandleDrag}
+            animationFrameCount={animationFrameCount}
+            handleDrag={throttledHandleDragRef.current}
             point={point}
             pointStyle={{ pointSize: 10, color: "yellow" }}
           />
         );
       })}
-
       <PointCanvas
         draw={drawFunctionPoints}
         pathPoints={pathPoints}

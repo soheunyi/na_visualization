@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import _ from "lodash";
 
 export default function FloatingPoint(props) {
-  const [dragExcludedPosition, setDragExcludedPosition] = useState(
-    props.point.position
+  const initialPosition = useMemo(() => props.point.position, []);
+  const initialAnimationFrameCount = useMemo(
+    () => props.animationFrameCount,
+    []
   );
+  const animationDisplacementRef = useRef();
+
   const [dragData, setDragData] = useState({
     x: 0,
     y: 0,
@@ -15,32 +19,38 @@ export default function FloatingPoint(props) {
     lastY: 0,
   });
 
-  const [start, _setStart] = useState(Date.now());
-
-  const { animated, animation } = props;
-  const secondsElapsed = Math.floor((Date.now() - start) / 1000);
-
   const updatePivotalPoint = () => {
     const { key } = props.point;
+    const animationDisplacement = _.isUndefined(
+      animationDisplacementRef.current
+    )
+      ? { x: 0, y: 0 }
+      : animationDisplacementRef.current;
 
     const newPosition = {
-      x: dragExcludedPosition.x + dragData.x,
-      y: dragExcludedPosition.y + dragData.y,
+      x: initialPosition.x + animationDisplacement.x + dragData.x,
+      y: initialPosition.y + animationDisplacement.x + dragData.y,
     };
-
+    console.log(
+      "pivotal point updated",
+      props.point.key,
+      animationDisplacementRef.current,
+      newPosition
+    );
     const newPoint = { key, position: newPosition };
-    // console.log(newPoint);
     props.handleDrag(newPoint);
   };
 
-  // useEffect(() => {
-  //   console.log(animation);
-  //   if (animated) {
-  //     setDragExcludedPosition(animation(dragExcludedPosition, secondsElapsed));
-  //     updatePivotalPoint();
-  //   }
-  //   console.log(dragExcludedPosition);
-  // }, [secondsElapsed]);
+  const { animated, animation, animationFrameCount } = props;
+
+  useEffect(() => {
+    if (animated) {
+      animationDisplacementRef.current = animation(
+        animationFrameCount - initialAnimationFrameCount
+      );
+      updatePivotalPoint();
+    }
+  }, [animationFrameCount]);
 
   const handleDrag = (_event, dragData) => {
     setDragData(dragData);
@@ -48,14 +58,18 @@ export default function FloatingPoint(props) {
   };
 
   const { pointSize, color } = props.pointStyle;
+  const animationDisplacement = _.isUndefined(animationDisplacementRef.current)
+    ? { x: 0, y: 0 }
+    : animationDisplacementRef.current;
+
   return (
     <Draggable onDrag={handleDrag}>
       <div
         className="drag-wrapper"
         style={{
           position: "absolute",
-          left: dragExcludedPosition.x - pointSize,
-          top: dragExcludedPosition.y - pointSize,
+          left: initialPosition.x + animationDisplacement.x - pointSize,
+          top: initialPosition.y + animationDisplacement.y - pointSize,
           width: 2 * pointSize,
           height: 2 * pointSize,
           borderRadius: "100%",
