@@ -12,7 +12,7 @@ function App() {
       <ReactCursorPosition style={{ position: "absolute" }}>
         <PositionSetter
           style={{ pointSize: 10, lineWidth: 5 }}
-          animated={false}
+          animated={true}
           animation={(animationFrameCount) => ({
             x: 10 * (animationFrameCount % 10),
             y: 10 * (animationFrameCount % 10),
