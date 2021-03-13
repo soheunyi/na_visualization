@@ -19,7 +19,6 @@ export default class FormulaPiece {
       plotPoints.push({ x: x, y: this.evaluate(x) });
       i++;
     }
-    console.log(plotPoints);
     return plotPoints;
   }
 }

@@ -45,23 +45,30 @@ export default function PositionSetter(props) {
     pivotalPoints[updateIndex] = draggedPoint;
   };
 
-  const throttledHandleDrag = useCallback(
-    _.throttle((...args) => throttledHandleDragRef.current(...args), 10),
-    []
-  );
-
   const appendPoint = () => {
     const MAX_POINT_NUM = 100;
     const key = Math.random().toString(36);
     const { position } = props;
-    // const newPivotalPoints =
-    //   pp.length < MAX_POINT_NUM ? pp.concat({ key, position }) : pp;
-    pivotalPoints.push({ position, key });
+
+    if (pivotalPoints.length < MAX_POINT_NUM) {
+      pivotalPoints.push({ position, key });
+    }
   };
 
-  const { animated, animation, lineWidth, pointSize } = props;
+  const [animationFrameCount, setAnimationFrameCount] = useState(0);
 
-  const animationFrameCount = Math.floor(Date.now() / 200);
+  const { animated, animation, lineWidth, pointSize } = props;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (animated) {
+        setAnimationFrameCount((prev) => prev + 1);
+      }
+    }, 1000 / 60);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [animated]);
 
   return (
     <div

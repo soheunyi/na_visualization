@@ -29,14 +29,8 @@ export default function FloatingPoint(props) {
 
     const newPosition = {
       x: initialPosition.x + animationDisplacement.x + dragData.x,
-      y: initialPosition.y + animationDisplacement.x + dragData.y,
+      y: initialPosition.y + animationDisplacement.y + dragData.y,
     };
-    console.log(
-      "pivotal point updated",
-      props.point.key,
-      animationDisplacementRef.current,
-      newPosition
-    );
     const newPoint = { key, position: newPosition };
     props.handleDrag(newPoint);
   };

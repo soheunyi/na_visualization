@@ -11,9 +11,10 @@ export default function Toggle(props) {
   const toggle = useRef();
   const checkbox = useRef();
   function handleToggle() {
-    if (props.onChange) props.onChange();
+    if (props.onChange) props.onChange(checkbox.current.checked);
     toggle.current.classList.toggle("toggled");
     checkbox.current.checked = !checkbox.current.checked;
+    if (props.onToggle) props.onToggle(checkbox.current.checked);
   }
   return (
     <>
