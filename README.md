@@ -36,7 +36,9 @@ poetry run python main.py
 
 ## Build docker image
 
+```
 docker build -t na-visualization:latest
+```
 
 ## Run docker containers
 
