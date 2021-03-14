@@ -17,7 +17,7 @@ export default function PositionSetter(props) {
 
   useEffect(() => {
     connection.current = socketio.connect(apiUrl);
-    console.log(connection.current.id);
+
     connection.current.on("path points", (newPathArray) =>
       setPathPoints(arrayToPoints(newPathArray))
     );

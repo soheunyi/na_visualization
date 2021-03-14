@@ -26,13 +26,3 @@ COPY . /app/
 WORKDIR /app
 
 EXPOSE 3000 5000
-
-
-
-
-
-
-
-
-
-

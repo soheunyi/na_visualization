@@ -1,0 +1,17 @@
+version : "3.5"
+services:
+  frontend:
+    container_name: frontend
+    build : .
+    depends_on: 
+      - backend
+    ports:
+      - "3000:3000"
+    command: bash -c "cd /app/frontend && yarn start"
+
+  backend:
+    container_name: backend
+    build : .
+    ports: 
+      - "5000:5000"
+    command: bash -c "cd /app/backend && ls && poetry run python main.py"
