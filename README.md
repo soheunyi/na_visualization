@@ -33,3 +33,17 @@ yarn start
 cd backend
 poetry run python main.py
 ```
+
+## Build docker image
+
+docker build -t na-visualization:latest
+
+## Run docker containers
+
+### Run frontend
+
+docker run -d -p 3000:3000 na-visualization:latest bash cd /app/frontend && yarn start
+
+### Run backend
+
+docker run -d -p 5000:5000 na-visualization:latest bash cd /app/backend && poetry run python main.py

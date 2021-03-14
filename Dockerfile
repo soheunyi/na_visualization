@@ -15,8 +15,8 @@ RUN pip3 install "poetry==${POETRY_VERSION}"
 
 COPY ./backend/poetry.lock ./backend/pyproject.toml /app/backend/
 WORKDIR /app/backend
-RUN poetry config virtualenvs.create false \
-  && poetry install $(test "$YOUR_ENV" == production && echo "--no-dev") --no-interaction --no-ansi
+RUN poetry install $(test "$YOUR_ENV" == production && echo "--no-dev") --no-interaction --no-ansi
+
 
 COPY ./frontend/yarn.lock ./frontend/package.json /app/frontend/
 WORKDIR /app/frontend
