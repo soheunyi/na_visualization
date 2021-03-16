@@ -1,3 +1,5 @@
+# Deprecated
+Go to na_visualization_frontend, na_visualization_backend instead of this repo.
 # Interactive interpolation plotter
 
 ## Install poetry, a python dependency manager
