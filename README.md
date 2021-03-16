@@ -1,5 +1,8 @@
 # Deprecated
-Go to na_visualization_frontend, na_visualization_backend instead of this repo.
+Go to <href link_to=github.com/lsdluis1/na_visualizaiton_frontend>na_visualization_frontend<href>, 
+ <href link_to=github.com/lsdluis1/na_visualizaiton_backend>na_visualization_backend<href> 
+    instead of this repo.
+
 Will not be updated sustainably since 2021/03/16
 # Interactive interpolation plotter
 
