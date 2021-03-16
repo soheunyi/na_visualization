@@ -1,11 +1,9 @@
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO
-from flask_cors import CORS
 from wavy_interpolation import wavy_interpolation
 import os
 
 app = Flask(__name__)
-CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 

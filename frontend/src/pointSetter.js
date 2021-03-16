@@ -11,9 +11,11 @@ const pivotalPoints = [];
 export default function PositionSetter(props) {
   const [pp, setPivotalPoints] = useState([]);
   const [pathPoints, setPathPoints] = useState([]);
-  const apiUrl = "http://localhost:5000";
+  const apiUrl = "http://www.dawnpond.me:80";
 
   const connection = useRef(null);
+
+  let line = <></>;
 
   useEffect(() => {
     connection.current = socketio.connect(apiUrl);
@@ -24,7 +26,7 @@ export default function PositionSetter(props) {
 
     const interval = setInterval(() => {
       setPivotalPoints([...pivotalPoints]);
-    }, 1000 / 60);
+    }, 1000 / 120);
 
     return () => {
       connection.current.disconnect();
@@ -58,7 +60,8 @@ export default function PositionSetter(props) {
 
   const [animationFrameCount, setAnimationFrameCount] = useState(0);
 
-  const { animated, animation, lineWidth, pointSize } = props;
+  const { animated, animation, lineWidth, style } = props;
+  const { pointSize } = style;
   useEffect(() => {
     const interval = setInterval(() => {
       if (animated) {

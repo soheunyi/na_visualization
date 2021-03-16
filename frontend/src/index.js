@@ -13,7 +13,7 @@ function App() {
       <Toggle onToggle={setAnimated} />
       <ReactCursorPosition style={{ position: "absolute" }}>
         <PositionSetter
-          style={{ pointSize: 10, lineWidth: 5 }}
+          style={{ pointSize: 100, lineWidth: 5 }}
           animated={animated}
           animation={(animationFrameCount) => ({
             x: 100 * Math.cos((animationFrameCount % 60) * (Math.PI / 30)),
