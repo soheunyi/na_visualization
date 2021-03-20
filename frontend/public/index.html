@@ -35,7 +35,7 @@
       function runPythonFile(fileName) {
         fetch("%PUBLIC_URL%/".concat(fileName))
           .then((response) => response.text())
-          .then((text) => pyodide.runPython(text));
+          .then((src) => pyodide.runPython(src));
       }
       languagePluginLoader.then(async function () {
         await pyodide.loadPackage(["numpy", "json"]);
@@ -49,14 +49,7 @@
 
           document
             .getElementById("root")
-            .setAttribute("pathPosition", pyodide.globals.path_position);
-
-          document
-            .getElementById("root")
-            .setAttribute(
-              "plotPosition",
-              JSON.stringify(pyodide.globals.plot_position)
-            );
+            .setAttribute("plotPosition", pyodide.globals.plot_position);
         }, 1000 / 60);
       });
     </script>
