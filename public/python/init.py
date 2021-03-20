@@ -1,6 +1,8 @@
 import numpy as np
 
 pivotal_position = []
+clock = 0
+inner_nodes = 2
 
 
 def sort_2d_array(points):
@@ -23,7 +25,7 @@ def get_func_index(x_arr, x_level_threshold):
         return np.clip((x_level - 1), 0, level_num - 2)
 
 
-def linear_interpolation(points, path_points_num=1000):
+def linear_interpolation(points, path_points_num=150):
     if len(points) <= 1:
         return points
     points = sort_2d_array(np.array(points))
@@ -37,3 +39,27 @@ def linear_interpolation(points, path_points_num=1000):
     return np.array([x_arr, (points_y[func_index + 1] - points_y[func_index]) /
                      (points_x[func_index + 1] - points_x[func_index]) *
                      (x_arr - points_x[func_index]) + points_y[func_index]]).T
+
+
+def piecewise_sine_curve(x_arr, nodes, inner_nodes):
+    nodes = np.sort(np.unique(nodes))
+    func_index = get_func_index(x_arr, nodes)
+
+    return np.sin(inner_nodes * np.pi * (x_arr - nodes[func_index]) /
+                  (nodes[func_index + 1] - nodes[func_index]))
+
+
+def wavy_interpolation(points, amp=100, inner_nodes=1, path_points_num=150, clock=None):
+    if len(points) < 2:
+        return np.array([])
+    x_arr, linear_y = linear_interpolation(points, path_points_num).T
+    points = np.array(points)
+    points_x = points[:, 0]
+
+    if clock == None:
+        sine_y = amp * piecewise_sine_curve(x_arr, points_x, inner_nodes)
+    else:
+        sine_y = amp * np.sin(2 * np.pi * clock) * piecewise_sine_curve(x_arr,
+                                                                        points_x, inner_nodes)
+
+    return np.array([x_arr, sine_y + linear_y]).T

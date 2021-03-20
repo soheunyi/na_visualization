@@ -29,8 +29,6 @@
     <title>React App</title>
   </head>
   <body>
-    Pyodide test page <br />
-    Open your browser console to see Pyodide output
     <script type="text/javascript">
       function runPythonFile(fileName) {
         fetch("%PUBLIC_URL%/".concat(fileName))
@@ -39,13 +37,16 @@
       }
       languagePluginLoader.then(async function () {
         await pyodide.loadPackage(["numpy", "json"]);
-        await runPythonFile("init.py");
-        const interval = setInterval(() => {
+        await runPythonFile("python/init.py");
+
+        const interval = await setInterval(() => {
+          const frequency = 2;
+          pyodide.globals.clock = frequency * (Date.now() / 1000);
           pyodide.globals.pivotal_position = document
             .getElementById("root")
             .getAttribute("pivotalPosition");
 
-          runPythonFile("main.py");
+          runPythonFile("python/main.py");
 
           document
             .getElementById("root")
@@ -55,15 +56,5 @@
     </script>
     <div id="root"></div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

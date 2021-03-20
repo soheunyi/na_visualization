@@ -8,7 +8,8 @@ export default function FloatingPoint(props) {
     () => props.animationFrameCount,
     []
   );
-  const animationDisplacementRef = useRef();
+  const absoluteAnimationDisplacementRef = useRef();
+  const relativeAnimationDisplacementRef = useRef();
 
   const [dragData, setDragData] = useState({
     x: 0,
@@ -19,27 +20,45 @@ export default function FloatingPoint(props) {
     lastY: 0,
   });
 
+  const originIfUndefined = (displacement) =>
+    _.isUndefined(displacement) ? { x: 0, y: 0 } : displacement;
+
+  const addPosition = (p1, p2) => ({ x: p1.x + p2.x, y: p1.y + p2.y });
+
   const updatePivotalPoint = () => {
     const { key } = props.point;
-    const animationDisplacement = _.isUndefined(
-      animationDisplacementRef.current
-    )
-      ? { x: 0, y: 0 }
-      : animationDisplacementRef.current;
+    const absoluteAnimationDisplacement = originIfUndefined(
+      absoluteAnimationDisplacementRef.current
+    );
 
-    const newPosition = {
-      x: initialPosition.x + animationDisplacement.x + dragData.x,
-      y: initialPosition.y + animationDisplacement.y + dragData.y,
-    };
+    const relativeAnimationDisplacement = originIfUndefined(
+      relativeAnimationDisplacementRef.current
+    );
+
+    const newPosition = addPosition(
+      addPosition(initialPosition, dragData),
+      addPosition(absoluteAnimationDisplacement, relativeAnimationDisplacement)
+    );
+
     const newPoint = { key, position: newPosition };
     props.handleDrag(newPoint);
   };
 
-  const { animated, animation, animationFrameCount } = props;
+  const {
+    animated,
+    absoluteAnimation,
+    relativeAnimation,
+    animationFrameCount,
+  } = props;
 
   useEffect(() => {
     if (animated) {
-      animationDisplacementRef.current = animation(
+      const absoluteMovement = absoluteAnimation();
+      absoluteAnimationDisplacementRef.current = addPosition(
+        originIfUndefined(absoluteAnimationDisplacementRef.current),
+        absoluteMovement
+      );
+      relativeAnimationDisplacementRef.current = relativeAnimation(
         animationFrameCount - initialAnimationFrameCount
       );
       updatePivotalPoint();
@@ -52,9 +71,17 @@ export default function FloatingPoint(props) {
   };
 
   const { pointSize, color } = props.pointStyle;
-  const animationDisplacement = _.isUndefined(animationDisplacementRef.current)
-    ? { x: 0, y: 0 }
-    : animationDisplacementRef.current;
+  const absoluteAnimationDisplacement = originIfUndefined(
+    absoluteAnimationDisplacementRef.current
+  );
+  const relativeAnimationDisplacement = originIfUndefined(
+    relativeAnimationDisplacementRef.current
+  );
+
+  const animationDisplacement = addPosition(
+    relativeAnimationDisplacement,
+    absoluteAnimationDisplacement
+  );
 
   return (
     <Draggable onDrag={handleDrag}>

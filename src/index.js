@@ -4,9 +4,12 @@ import Toggle from "./components/toggleSwitch";
 import _ from "lodash";
 import React, { useRef, useEffect, useState } from "react";
 import { positionParser } from "./api/parsePoints";
+import circular from "./animations/relativeAnimations/circular";
 
 import "./styles.css";
 import PositionSetter from "./pointSetter";
+import linear from "./animations/absoluteAnimations/linear";
+import brownianMotion from "./animations/absoluteAnimations/brownianMotion";
 
 const pivotalPoints = [];
 
@@ -59,10 +62,9 @@ function App(props) {
         <PositionSetter
           style={{ pointSize: 10, lineWidth: 5 }}
           animated={animated}
-          animation={(animationFrameCount) => ({
-            x: 100 * Math.cos(animationFrameCount * (Math.PI / 100)) - 100,
-            y: 100 * Math.sin(animationFrameCount * (Math.PI / 100)),
-          })}
+          // relativeAnimation={circular(100, 1, true)}
+          // absoluteAnimation={linear({ x: 10, y: 20 })}
+          absoluteAnimation={brownianMotion(5)}
           handleDoubleClick={handleDoubleClickRef.current}
           handleDrag={handleDragRef.current}
           pivotalPoints={pivotalP}
@@ -89,4 +91,4 @@ setInterval(() => {
   );
 }, 1000 / 60);
 
-ReactDOM.render(<App testString={testString} />, rootElement);
+ReactDOM.render(<App />, rootElement);
