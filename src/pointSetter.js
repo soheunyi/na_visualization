@@ -56,8 +56,6 @@ export default function PositionSetter(props) {
         pointStyle={{ color: "red", pointSize: pointSize }}
         canvasStyle={{ width: 1600, height: 1000 }}
       />
-
-      <p>{JSON.stringify(props)}</p>
     </div>
   );
 }

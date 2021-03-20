@@ -1,8 +1,10 @@
 # Deprecated
-Go to [**na_visualization_frontend**](github.com/lsdluis1/na_visualizaiton_frontend) and 
+
+Go to [**na_visualization_frontend**](github.com/lsdluis1/na_visualizaiton_frontend) and
 [**na_visualization_backend**](github.com/lsdluis1/na_visualizaiton_backend) instead of this repo.
 
 This Repo will not be updated sustainably since 2021/03/16
+
 # Interactive interpolation plotter
 
 ## Install poetry, a python dependency manager
