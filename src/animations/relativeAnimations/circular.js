@@ -1,6 +1,6 @@
 import { SCAN_RATE } from "../../constant";
 
-export default function circular(radius, freq, clockwise) {
+export default function circular({ radius, freq, clockwise }) {
   return (animationFrameCount) => {
     const phase = clockwise
       ? (-2 * Math.PI * freq * animationFrameCount) / SCAN_RATE

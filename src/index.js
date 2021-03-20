@@ -4,12 +4,15 @@ import Toggle from "./components/toggleSwitch";
 import _ from "lodash";
 import React, { useRef, useEffect, useState } from "react";
 import { positionParser } from "./api/parsePoints";
-import circular from "./animations/relativeAnimations/circular";
+import SelectBox from "./components/selectBox";
 
 import "./styles.css";
 import PositionSetter from "./pointSetter";
-import linear from "./animations/absoluteAnimations/linear";
-import brownianMotion from "./animations/absoluteAnimations/brownianMotion";
+
+import {
+  ABSOLUTE_ANIMATION_OPTIONS,
+  RELATIVE_ANIMATION_OPTIONS,
+} from "./constant";
 
 const pivotalPoints = [];
 
@@ -17,6 +20,12 @@ function App(props) {
   const [animated, setAnimated] = useState(false);
   const [pivotalP, setPivotalP] = useState([]);
   const [plotP, setPlotP] = useState({ path: [], pivotal: [] });
+  const [absoluteAnimation, setAbsoluteAnimation] = useState(
+    ABSOLUTE_ANIMATION_OPTIONS[0]
+  );
+  const [relativeAnimation, setRelativeAnimation] = useState(
+    RELATIVE_ANIMATION_OPTIONS[0]
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,15 +65,30 @@ function App(props) {
 
   return (
     <div>
-      {props.testString}
-      <Toggle onToggle={setAnimated} />
+      <div class="select-container">
+        <Toggle id="left" name="Animated?" onToggle={setAnimated} />
+        <SelectBox
+          id="center"
+          name="Absolute Animation"
+          label="absoluteAnimation"
+          options={ABSOLUTE_ANIMATION_OPTIONS}
+          onChange={setAbsoluteAnimation}
+        ></SelectBox>
+        <SelectBox
+          id="right"
+          name="Relative Animation"
+          label="relativeAnimation"
+          options={RELATIVE_ANIMATION_OPTIONS}
+          onChange={setRelativeAnimation}
+        ></SelectBox>
+      </div>
+
       <ReactCursorPosition style={{ position: "absolute" }}>
         <PositionSetter
           style={{ pointSize: 10, lineWidth: 5 }}
           animated={animated}
-          // relativeAnimation={circular(100, 1, true)}
-          // absoluteAnimation={linear({ x: 10, y: 20 })}
-          absoluteAnimation={brownianMotion(5)}
+          relativeAnimation={relativeAnimation.value}
+          absoluteAnimation={absoluteAnimation.value}
           handleDoubleClick={handleDoubleClickRef.current}
           handleDrag={handleDragRef.current}
           pivotalPoints={pivotalP}
@@ -75,7 +99,6 @@ function App(props) {
   );
 }
 const rootElement = document.getElementById("root");
-var testString = null;
 
 setInterval(() => {
   const str = "";

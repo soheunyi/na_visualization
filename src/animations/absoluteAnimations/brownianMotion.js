@@ -8,7 +8,7 @@ const pseudoNormalGenerator = (n) => {
   return (randomValue - n / 2) / (n / 12) ** 2;
 };
 
-export default function linear(sigma) {
+export default function brownianMotion({ sigma }) {
   return () => {
     return {
       x: (sigma * pseudoNormalGenerator(5)) / SCAN_RATE ** 0.5,

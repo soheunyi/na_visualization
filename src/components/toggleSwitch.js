@@ -17,7 +17,8 @@ export default function Toggle(props) {
     if (props.onToggle) props.onToggle(checkbox.current.checked);
   }
   return (
-    <>
+    <div {...props}>
+      <p>{props.name}</p>
       <input
         ref={checkbox}
         name={props.name}
@@ -33,6 +34,6 @@ export default function Toggle(props) {
       >
         <span className="toggle"></span>
       </span>
-    </>
+    </div>
   );
 }
