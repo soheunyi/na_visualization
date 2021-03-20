@@ -2,7 +2,7 @@ import numpy as np
 from numpy_tools import get_func_index, get_x_level, sort_2d_array
 
 
-def linear_interpolation(points, path_points_num=1000):
+def linear_interpolation(points, path_points_num=150):
     if len(points) <= 1:
         return points
     points = sort_2d_array(np.array(points))

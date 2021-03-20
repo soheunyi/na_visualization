@@ -50,8 +50,8 @@ export default function PositionSetter(props) {
       })}
       <PointCanvas
         draw={drawFunctionPoints}
-        pathPoints={props.pathPoints}
-        points={props.pivotalPoints}
+        pathPoints={props.plotPoints.path}
+        points={props.plotPoints.pivotal}
         lineStyle={{ color: "black", width: lineWidth }}
         pointStyle={{ color: "red", pointSize: pointSize }}
         canvasStyle={{ width: 1600, height: 1000 }}

@@ -26,10 +26,10 @@ function PointCanvas(props) {
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
+    draw(context, pathPoints, lineStyle);
     points.map((point) => {
       drawCoordinates(context, point.x, point.y, pointStyle);
     });
-    draw(context, pathPoints, lineStyle);
   }, [points, pathPoints]);
 
   return (

@@ -68,6 +68,7 @@ export default function FloatingPoint(props) {
           height: 2 * pointSize,
           borderRadius: "100%",
           background: color,
+          opacity: 0,
         }}
       ></div>
     </Draggable>

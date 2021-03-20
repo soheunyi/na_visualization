@@ -45,11 +45,18 @@
             .getElementById("root")
             .getAttribute("pivotalPosition");
 
-          runPythonFile("test.py");
+          runPythonFile("main.py");
 
           document
             .getElementById("root")
-            .setAttribute("pathPoints", pyodide.globals.path_points);
+            .setAttribute("pathPosition", pyodide.globals.path_position);
+
+          document
+            .getElementById("root")
+            .setAttribute(
+              "plotPosition",
+              JSON.stringify(pyodide.globals.plot_position)
+            );
         }, 1000 / 60);
       });
     </script>
