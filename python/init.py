@@ -1,4 +1,6 @@
 import numpy as np
+import json
+
 
 pivotal_position = []
 clock = 0
@@ -27,7 +29,7 @@ def get_func_index(x_arr, x_level_threshold):
 
 
 def linear_interpolation(points, path_points_num=150):
-    if len(points) <= 1:
+    if len(points) < 2:
         return points
     points = sort_2d_array(np.array(points))
     points_x = points[:, 0]
@@ -64,3 +66,20 @@ def wavy_interpolation(points, amp=100, inner_nodes=1, path_points_num=150, cloc
                                                                         points_x, inner_nodes)
 
     return np.array([x_arr, sine_y + linear_y]).T
+
+
+def lagrange_interpolation(points, path_points_num=150):
+    if len(points) < 2:
+        return np.array([])
+    points = sort_2d_array(np.array(points))
+    points_x = points[:, 0]
+    points_y = points[:, 1]
+    x_arr = np.linspace(points_x[0], points_x[-1], path_points_num)
+
+    lagrange_poly = 0
+    for i in range(points_x.size):
+        partial_poly = np.poly(np.delete(points_x, i))
+        lagrange_poly += partial_poly / \
+            np.polyval(partial_poly, points_x[i]) * points_y[i]
+
+    return np.array([x_arr, np.polyval(lagrange_poly, x_arr)]).T
