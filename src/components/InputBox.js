@@ -25,9 +25,10 @@ export default function InputBox(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ padding: "1%" }}>
       <label>
-        {props.name}:
+        {props.name}
+        <br />
         <input
           id={props.name.concat("-input-form")}
           type={props.type}

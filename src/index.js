@@ -111,32 +111,34 @@ function App() {
     <div>
       <div class="select-container">
         <Toggle id="left" name="Animated?" onToggle={setAnimated} />
-        <SelectBox
-          id="center"
-          name="Absolute Animation"
-          label="absoluteAnimation"
-          options={ABSOLUTE_ANIMATION_OPTIONS}
-          onChange={setAbsoluteAnimationRef}
-        ></SelectBox>
-        <MultipleInputBox
-          inputsInfo={emptyArrayIfUndefined(
-            absoluteAnimationVariableRef.current
-          )}
-          handleInputChange={setAbsoluteAnimationVariableRef}
-        ></MultipleInputBox>
-        <SelectBox
-          id="right"
-          name="Relative Animation"
-          label="relativeAnimation"
-          options={RELATIVE_ANIMATION_OPTIONS}
-          onChange={setRelativeAnimationRef}
-        ></SelectBox>
-        <MultipleInputBox
-          inputsInfo={emptyArrayIfUndefined(
-            relativeAnimationVariableRef.current
-          )}
-          handleInputChange={setRelativeAnimationVariableRef}
-        ></MultipleInputBox>
+        <div id="center">
+          <SelectBox
+            name="Absolute Animation"
+            label="absoluteAnimation"
+            options={ABSOLUTE_ANIMATION_OPTIONS}
+            onChange={setAbsoluteAnimationRef}
+          ></SelectBox>
+          <MultipleInputBox
+            inputsInfo={emptyArrayIfUndefined(
+              absoluteAnimationVariableRef.current
+            )}
+            handleInputChange={setAbsoluteAnimationVariableRef}
+          ></MultipleInputBox>
+        </div>
+        <div id="right">
+          <SelectBox
+            name="Relative Animation"
+            label="relativeAnimation"
+            options={RELATIVE_ANIMATION_OPTIONS}
+            onChange={setRelativeAnimationRef}
+          ></SelectBox>
+          <MultipleInputBox
+            inputsInfo={emptyArrayIfUndefined(
+              relativeAnimationVariableRef.current
+            )}
+            handleInputChange={setRelativeAnimationVariableRef}
+          ></MultipleInputBox>
+        </div>
       </div>
 
       <ReactCursorPosition style={{ position: "absolute" }}>
