@@ -61,7 +61,7 @@ export default function PositionSetter(props) {
         points={props.plotPoints.pivotal}
         lineStyle={{ color: "black", width: lineWidth }}
         pointStyle={{ color: "red", pointSize: pointSize }}
-        canvasStyle={{ width: 1600, height: 1000 }}
+        canvasStyle={{ width: 7200, height: 4000 }}
       />
     </div>
   );
