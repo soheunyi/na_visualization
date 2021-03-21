@@ -1,11 +1,10 @@
 export default function InputBox(props) {
   const handleCheckboxChange = (event) => {
     const target = event.target;
-    console.log(target.type);
     if (target.type === "checkbox") {
       props.handleInputChange({
         name: target.name,
-        value: target.checked,
+        value: !target.checked,
         type: target.type,
       });
     }

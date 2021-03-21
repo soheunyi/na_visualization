@@ -9,7 +9,6 @@ export default function MultipleInputBox(props) {
       (info) => info.name === inputChange.name
     );
     newInputsInfo[updateIndex] = inputChange;
-    console.log(newInputsInfo);
     props.handleInputChange(newInputsInfo);
   }
 
