@@ -1,20 +1,38 @@
 export default function InputBox(props) {
-  const handleInputChange = (event) => {
+  const handleCheckboxChange = (event) => {
     const target = event.target;
-    const type = target.type;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    props.handleInputChange({ name, value, type });
+    console.log(target.type);
+    if (target.type === "checkbox") {
+      props.handleInputChange({
+        name: target.name,
+        value: target.checked,
+        type: target.type,
+      });
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const inputElement = document.getElementById(
+      props.name.concat("-input-form")
+    );
+
+    props.handleInputChange({
+      name: inputElement.name,
+      value: Number(inputElement.value),
+      type: inputElement.type,
+    });
   };
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <label>
         {props.name}:
         <input
+          id={props.name.concat("-input-form")}
           type={props.type}
           name={props.name}
-          onChange={handleInputChange}
+          onChange={handleCheckboxChange}
         />
       </label>
     </form>

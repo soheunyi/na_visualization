@@ -5,9 +5,13 @@ import _ from "lodash";
 import React, { useRef, useEffect, useState } from "react";
 import { positionParser } from "./api/parsePoints";
 import SelectBox from "./components/selectBox";
+import MultipleInputBox from "./components/multipleInputBox";
 
 import "./styles.css";
 import PositionSetter from "./pointSetter";
+
+import emptyArrayIfUndefined from "./tools/emptyArrayIfUndefined";
+import extractVariable from "./tools/extractVariable";
 
 import {
   ABSOLUTE_ANIMATION_OPTIONS,
@@ -16,15 +20,18 @@ import {
 
 const pivotalPoints = [];
 
-function App(props) {
+function App() {
   const [animated, setAnimated] = useState(false);
   const [pivotalP, setPivotalP] = useState([]);
   const [plotP, setPlotP] = useState({ path: [], pivotal: [] });
-  const [absoluteAnimation, setAbsoluteAnimation] = useState(
-    ABSOLUTE_ANIMATION_OPTIONS[0]
+
+  const absoluteAnimationRef = useRef(ABSOLUTE_ANIMATION_OPTIONS[0]);
+  const relativeAnimationRef = useRef(RELATIVE_ANIMATION_OPTIONS[0]);
+  const absoluteAnimationVariableRef = useRef(
+    absoluteAnimationRef.current.variable
   );
-  const [relativeAnimation, setRelativeAnimation] = useState(
-    RELATIVE_ANIMATION_OPTIONS[0]
+  const relativeAnimationVariableRef = useRef(
+    relativeAnimationRef.current.variable
   );
 
   useEffect(() => {
@@ -44,6 +51,43 @@ function App(props) {
       clearInterval(interval);
     };
   }, []);
+
+  const setAbsoluteAnimationRef = (obj) => {
+    absoluteAnimationRef.current = obj;
+  };
+  const setRelativeAnimationRef = (obj) => {
+    relativeAnimationRef.current = obj;
+  };
+
+  const setAbsoluteAnimationVariableRef = (arr) => {
+    absoluteAnimationVariableRef.current = arr;
+  };
+
+  const setRelativeAnimationVariableRef = (arr) => {
+    relativeAnimationVariableRef.current = arr;
+  };
+
+  useEffect(() => {
+    const newIndex = _.findIndex(
+      ABSOLUTE_ANIMATION_OPTIONS,
+      (o) => o.label === absoluteAnimationRef.current.label
+    );
+
+    setAbsoluteAnimationVariableRef(
+      ABSOLUTE_ANIMATION_OPTIONS[newIndex].variable
+    );
+  }, [absoluteAnimationRef.current]);
+
+  useEffect(() => {
+    const newIndex = _.findIndex(
+      RELATIVE_ANIMATION_OPTIONS,
+      (o) => o.label === relativeAnimationRef.current.label
+    );
+
+    setRelativeAnimationVariableRef(
+      RELATIVE_ANIMATION_OPTIONS[newIndex].variable
+    );
+  }, [relativeAnimationRef.current]);
 
   const handleDragRef = useRef();
   handleDragRef.current = (draggedPoint) => {
@@ -72,23 +116,39 @@ function App(props) {
           name="Absolute Animation"
           label="absoluteAnimation"
           options={ABSOLUTE_ANIMATION_OPTIONS}
-          onChange={setAbsoluteAnimation}
+          onChange={setAbsoluteAnimationRef}
         ></SelectBox>
+        <MultipleInputBox
+          inputsInfo={emptyArrayIfUndefined(
+            absoluteAnimationVariableRef.current
+          )}
+          handleInputChange={setAbsoluteAnimationVariableRef}
+        ></MultipleInputBox>
         <SelectBox
           id="right"
           name="Relative Animation"
           label="relativeAnimation"
           options={RELATIVE_ANIMATION_OPTIONS}
-          onChange={setRelativeAnimation}
+          onChange={setRelativeAnimationRef}
         ></SelectBox>
+        <MultipleInputBox
+          inputsInfo={emptyArrayIfUndefined(
+            relativeAnimationVariableRef.current
+          )}
+          handleInputChange={setRelativeAnimationVariableRef}
+        ></MultipleInputBox>
       </div>
 
       <ReactCursorPosition style={{ position: "absolute" }}>
         <PositionSetter
           style={{ pointSize: 10, lineWidth: 5 }}
           animated={animated}
-          relativeAnimation={relativeAnimation.value}
-          absoluteAnimation={absoluteAnimation.value}
+          relativeAnimation={relativeAnimationRef.current.value(
+            extractVariable(relativeAnimationVariableRef)
+          )}
+          absoluteAnimation={absoluteAnimationRef.current.value(
+            extractVariable(absoluteAnimationVariableRef)
+          )}
           handleDoubleClick={handleDoubleClickRef.current}
           handleDrag={handleDragRef.current}
           pivotalPoints={pivotalP}

@@ -1,6 +1,8 @@
 import React, { useMemo, useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import _ from "lodash";
+import addPosition from "../tools/addPosition";
+import originIfUndefined from "../tools/originIfUndefined";
 
 export default function FloatingPoint(props) {
   const initialPosition = useMemo(() => props.point.position, []);
@@ -19,11 +21,6 @@ export default function FloatingPoint(props) {
     lastX: 0,
     lastY: 0,
   });
-
-  const originIfUndefined = (displacement) =>
-    _.isUndefined(displacement) ? { x: 0, y: 0 } : displacement;
-
-  const addPosition = (p1, p2) => ({ x: p1.x + p2.x, y: p1.y + p2.y });
 
   const updatePivotalPoint = () => {
     const { key } = props.point;

@@ -15,8 +15,8 @@ export default function PositionSetter(props) {
 
   const {
     animated,
-    absoluteAnimation = () => ({ x: 0, y: 0 }),
-    relativeAnimation = (_animationFrameCount) => ({ x: 0, y: 0 }),
+    absoluteAnimation,
+    relativeAnimation,
     lineWidth,
     style,
   } = props;

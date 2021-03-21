@@ -1,0 +1,7 @@
+#multiple-input-box {
+  width: 100px;
+  display: inline-flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-content: right;
+}
