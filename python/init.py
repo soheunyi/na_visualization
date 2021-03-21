@@ -2,7 +2,8 @@ import numpy as np
 
 pivotal_position = []
 clock = 0
-inner_nodes = 2
+inner_nodes = 4
+interpolation_method = "linear"
 
 
 def sort_2d_array(points):
