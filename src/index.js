@@ -7,7 +7,7 @@ import { positionParser } from "./api/parsePoints";
 import SelectBox from "./components/selectBox";
 import MultipleInputBox from "./components/multipleInputBox";
 
-import "./styles.css";
+import "./index.css";
 import PositionSetter from "./pointSetter";
 
 import emptyArrayIfUndefined from "./tools/emptyArrayIfUndefined";
@@ -16,6 +16,7 @@ import extractVariable from "./tools/extractVariable";
 import {
   ABSOLUTE_ANIMATION_OPTIONS,
   RELATIVE_ANIMATION_OPTIONS,
+  INTERPOLATION_OPTIONS,
 } from "./constant";
 
 const pivotalPoints = [];
@@ -107,11 +108,17 @@ function App() {
     }
   };
 
+  const setInterpolationMethod = (selectedOption) => {
+    document
+      .getElementById("root")
+      .setAttribute("interpolationMethod", selectedOption.value);
+  };
+
   return (
     <div>
       <div class="select-container">
-        <Toggle id="left" name="Animated?" onToggle={setAnimated} />
-        <div id="center">
+        <Toggle id="1st" name="Animated?" onToggle={setAnimated} />
+        <div id="2nd">
           <SelectBox
             name="Absolute Animation"
             label="absoluteAnimation"
@@ -125,7 +132,7 @@ function App() {
             handleInputChange={setAbsoluteAnimationVariableRef}
           ></MultipleInputBox>
         </div>
-        <div id="right">
+        <div id="3rd">
           <SelectBox
             name="Relative Animation"
             label="relativeAnimation"
@@ -138,6 +145,14 @@ function App() {
             )}
             handleInputChange={setRelativeAnimationVariableRef}
           ></MultipleInputBox>
+        </div>
+        <div id="4th">
+          <SelectBox
+            name="Interpolation Method"
+            label="interpolationMethod"
+            options={INTERPOLATION_OPTIONS}
+            onChange={setInterpolationMethod}
+          ></SelectBox>
         </div>
       </div>
 

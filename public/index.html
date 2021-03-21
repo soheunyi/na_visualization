@@ -46,6 +46,14 @@
             .getElementById("root")
             .getAttribute("pivotalPosition");
 
+          const interpolationMethod = document
+            .getElementById("root")
+            .getAttribute("interpolationMethod");
+          console.log(interpolationMethod);
+          if (interpolationMethod !== null) {
+            pyodide.globals.interpolation_method = interpolationMethod;
+          }
+
           runPythonFile("python/main.py");
 
           document
