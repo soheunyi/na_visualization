@@ -37,4 +37,5 @@ export const RELATIVE_ANIMATION_OPTIONS = [
 export const INTERPOLATION_OPTIONS = [
   { value: "wavy", label: "wavy" },
   { value: "linear", label: "linear" },
+  { value: "lagrange", label: "lagrange" },
 ];

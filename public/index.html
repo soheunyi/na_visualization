@@ -46,16 +46,18 @@
             .getElementById("root")
             .getAttribute("pivotalPosition");
 
+          runPythonFile("python/parse_pivotal_position.py");
+
           const interpolationMethod = document
             .getElementById("root")
             .getAttribute("interpolationMethod");
-          console.log(interpolationMethod);
-          if (interpolationMethod !== null) {
-            pyodide.globals.interpolation_method = interpolationMethod;
-          }
 
-          runPythonFile("python/main.py");
-
+          runPythonFile(
+            `python/executions/${
+              interpolationMethod !== null ? interpolationMethod : "linear"
+            }.py`
+          );
+          runPythonFile("python/parse_plot_position.py");
           document
             .getElementById("root")
             .setAttribute("plotPosition", pyodide.globals.plot_position);
