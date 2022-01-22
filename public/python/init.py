@@ -1,5 +1,6 @@
 import numpy as np
-from scipy.interpolate import CubicSpline
+from scipy.interpolate import (CubicSpline, Akima1DInterpolator,
+                               PchipInterpolator, InterpolatedUnivariateSpline)
 import re
 
 
@@ -104,6 +105,19 @@ def lagrange_interpolation(points: np.array, path_points_num=150):
     return np.array([x_arr, np.polyval(lagrange_poly, x_arr)]).T
 
 
+def quad_spline_interpolation(points, path_points_num=150):
+    if len(points) < 3:
+        return np.array([])
+    points = sort_2d_array(np.array(points))
+    points_x = points[:, 0]
+    points_y = points[:, 1]
+    x_arr = np.linspace(points_x[0], points_x[-1], path_points_num)
+
+    ppoly = InterpolatedUnivariateSpline(points_x, points_y, k=2)
+
+    return np.array([x_arr, ppoly(x_arr)]).T
+
+
 def cubic_spline_interpolation(points, path_points_num=150):
     if len(points) < 2:
         return np.array([])
@@ -115,3 +129,55 @@ def cubic_spline_interpolation(points, path_points_num=150):
     ppoly = CubicSpline(points_x, points_y)
 
     return np.array([x_arr, ppoly(x_arr)]).T
+
+
+def fourth_spline_interpolation(points, path_points_num=150):
+    if len(points) < 5:
+        return np.array([])
+    points = sort_2d_array(np.array(points))
+    points_x = points[:, 0]
+    points_y = points[:, 1]
+    x_arr = np.linspace(points_x[0], points_x[-1], path_points_num)
+
+    ppoly = InterpolatedUnivariateSpline(points_x, points_y, k=4)
+
+    return np.array([x_arr, ppoly(x_arr)]).T
+
+
+def fifth_spline_interpolation(points, path_points_num=150):
+    if len(points) < 6:
+        return np.array([])
+    points = sort_2d_array(np.array(points))
+    points_x = points[:, 0]
+    points_y = points[:, 1]
+    x_arr = np.linspace(points_x[0], points_x[-1], path_points_num)
+
+    ppoly = InterpolatedUnivariateSpline(points_x, points_y, k=5)
+
+    return np.array([x_arr, ppoly(x_arr)]).T
+
+
+def akima_interpolation(points, path_points_num=150):
+    if len(points) < 3:
+        return np.array([])
+    points = sort_2d_array(np.array(points))
+    points_x = points[:, 0]
+    points_y = points[:, 1]
+    x_arr = np.linspace(points_x[0], points_x[-1], path_points_num)
+
+    poly = Akima1DInterpolator(points_x, points_y)
+
+    return np.array([x_arr, poly(x_arr)]).T
+
+
+def pchip_interpolation(points, path_points_num=150):
+    if len(points) < 2:
+        return np.array([])
+    points = sort_2d_array(np.array(points))
+    points_x = points[:, 0]
+    points_y = points[:, 1]
+    x_arr = np.linspace(points_x[0], points_x[-1], path_points_num)
+
+    poly = PchipInterpolator(points_x, points_y)
+
+    return np.array([x_arr, poly(x_arr)]).T
