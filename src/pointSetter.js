@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import drawFunctionPoints from "./drawing/drawFunctionPoints";
 import FloatingPoint from "./components/floatingPoint";
 import PointCanvas from "./canvas/pointCanvas";
-import _ from "lodash";
 import { SCAN_RATE } from "./constant";
 
 export default function PositionSetter(props) {
@@ -13,13 +12,8 @@ export default function PositionSetter(props) {
 
   const [animationFrameCount, setAnimationFrameCount] = useState(0);
 
-  const {
-    animated,
-    absoluteAnimation,
-    relativeAnimation,
-    lineWidth,
-    style,
-  } = props;
+  const { animated, absoluteAnimation, relativeAnimation, lineWidth, style } =
+    props;
   const { pointSize } = style;
   useEffect(() => {
     const interval = setInterval(() => {

@@ -12,14 +12,8 @@ function drawCoordinates(ctx, x, y, pointStyle) {
 
 function PointCanvas(props) {
   const canvasRef = useRef(null);
-  const {
-    draw,
-    pathPoints,
-    points,
-    pointStyle,
-    lineStyle,
-    canvasStyle,
-  } = props;
+  const { draw, pathPoints, points, pointStyle, lineStyle, canvasStyle } =
+    props;
 
   useEffect(() => {
     const canvas = canvasRef.current;

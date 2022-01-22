@@ -24,29 +24,33 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.16.1/full/pyodide.js"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.19.0/full/pyodide.js"></script>
 
-    <title>React App</title>
+    <title>Visualizing Interpolation Methods</title>
   </head>
   <body>
     <script type="text/javascript">
-      function runPythonFile(fileName) {
-        fetch("%PUBLIC_URL%/".concat(fileName))
-          .then((response) => response.text())
-          .then((src) => pyodide.runPython(src));
-      }
-      languagePluginLoader.then(async function () {
-        await pyodide.loadPackage(["numpy", "json"]);
+      async function main() {
+        let pyodide = await loadPyodide({
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v0.19.0/full/",
+        });
+
+        function runPythonFile(fileName) {
+          fetch("%PUBLIC_URL%/".concat(fileName))
+            .then((response) => response.text())
+            .then((src) => pyodide.runPython(src));
+        }
+
+        await pyodide.loadPackage(["numpy", "regex", "scipy"]);
         await runPythonFile("python/init.py");
 
         const interval = await setInterval(() => {
           const frequency = 2;
-          pyodide.globals.clock = frequency * (Date.now() / 1000);
-          pyodide.globals.pivotal_position = document
-            .getElementById("root")
-            .getAttribute("pivotalPosition");
-
-          runPythonFile("python/parse_pivotal_position.py");
+          pyodide.globals.set("clock", frequency * (Date.now() / 1000));
+          pyodide.globals.set(
+            "pivotal_position",
+            document.getElementById("root").getAttribute("pivotalPosition")
+          );
 
           const interpolationMethod = document
             .getElementById("root")
@@ -57,12 +61,19 @@
               interpolationMethod !== null ? interpolationMethod : "linear"
             }.py`
           );
-          runPythonFile("python/parse_plot_position.py");
-          document
-            .getElementById("root")
-            .setAttribute("plotPosition", pyodide.globals.plot_position);
+
+          // console.log(pyodide.globals.get("plot_pivotal"));
+
+          document.getElementById("root").setAttribute(
+            "plotPosition",
+            JSON.stringify({
+              path: pyodide.globals.get("plot_path").toJs(),
+              pivotal: pyodide.globals.get("plot_pivotal").toJs(),
+            })
+          );
         }, 1000 / 60);
-      });
+      }
+      main();
     </script>
     <div id="root"></div>
     <noscript>You need to enable JavaScript to run this app.</noscript>

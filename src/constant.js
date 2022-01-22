@@ -38,4 +38,5 @@ export const INTERPOLATION_OPTIONS = [
   { value: "wavy", label: "wavy" },
   { value: "linear", label: "linear" },
   { value: "lagrange", label: "lagrange" },
+  { value: "cubic_spline", label: "cubic spline" },
 ];

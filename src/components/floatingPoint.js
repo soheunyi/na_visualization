@@ -1,6 +1,5 @@
 import React, { useMemo, useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
-import _ from "lodash";
 import addPosition from "../tools/addPosition";
 import originIfUndefined from "../tools/originIfUndefined";
 

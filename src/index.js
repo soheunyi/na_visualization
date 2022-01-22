@@ -43,6 +43,7 @@ function App() {
         plotPosition == null
           ? { path: [], pivotal: [] }
           : JSON.parse(plotPosition);
+
       plotPositionParsed.path = positionParser(plotPositionParsed.path);
       plotPositionParsed.pivotal = positionParser(plotPositionParsed.pivotal);
       setPlotP(plotPositionParsed);

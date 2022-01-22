@@ -1,15 +1,33 @@
 import numpy as np
-import json
+from scipy.interpolate import CubicSpline
+import re
 
 
 pivotal_position = []
 clock = 0
 inner_nodes = 4
 interpolation_method = "linear"
+plot_path = []
+plot_pivotal = []
 
 
-def sort_2d_array(points):
+def sort_2d_array(points: np.array):
     return points[np.lexsort(points.T[::-1])]
+
+
+TUPLE_REGEX = r"\[([0-9]+(?:|.[0-9]*)),([0-9]+(?:|.[0-9]*))\]"
+
+
+def parse_pivotal_position(pvts):
+    if isinstance(pvts, str):
+        if pvts == "[]":
+            return np.array([])
+        else:
+            res = re.compile(TUPLE_REGEX).findall(pvts)
+            return np.array(res, dtype=np.float64)
+    else:
+        # print("What is it?", pvts)
+        return pvts
 
 
 def get_x_level(x_arr, x_level_threshold):
@@ -28,10 +46,11 @@ def get_func_index(x_arr, x_level_threshold):
         return np.clip((x_level - 1), 0, level_num - 2)
 
 
-def linear_interpolation(points, path_points_num=150):
+def linear_interpolation(points: np.array, path_points_num=150):
     if len(points) < 2:
         return points
-    points = sort_2d_array(np.array(points))
+    # print(points, len(points))
+    points = sort_2d_array(points)
     points_x = points[:, 0]
     points_y = points[:, 1]
 
@@ -52,7 +71,7 @@ def piecewise_sine_curve(x_arr, nodes, inner_nodes):
                   (nodes[func_index + 1] - nodes[func_index]))
 
 
-def wavy_interpolation(points, amp=100, inner_nodes=1, path_points_num=150, clock=None):
+def wavy_interpolation(points: np.array, amp=100, inner_nodes=1, path_points_num=150, clock=None):
     if len(points) < 2:
         return np.array([])
     x_arr, linear_y = linear_interpolation(points, path_points_num).T
@@ -68,10 +87,10 @@ def wavy_interpolation(points, amp=100, inner_nodes=1, path_points_num=150, cloc
     return np.array([x_arr, sine_y + linear_y]).T
 
 
-def lagrange_interpolation(points, path_points_num=150):
+def lagrange_interpolation(points: np.array, path_points_num=150):
     if len(points) < 2:
         return np.array([])
-    points = sort_2d_array(np.array(points))
+    points = sort_2d_array(points)
     points_x = points[:, 0]
     points_y = points[:, 1]
     x_arr = np.linspace(points_x[0], points_x[-1], path_points_num)
@@ -83,3 +102,16 @@ def lagrange_interpolation(points, path_points_num=150):
             np.polyval(partial_poly, points_x[i]) * points_y[i]
 
     return np.array([x_arr, np.polyval(lagrange_poly, x_arr)]).T
+
+
+def cubic_spline_interpolation(points, path_points_num=150):
+    if len(points) < 2:
+        return np.array([])
+    points = sort_2d_array(np.array(points))
+    points_x = points[:, 0]
+    points_y = points[:, 1]
+    x_arr = np.linspace(points_x[0], points_x[-1], path_points_num)
+
+    ppoly = CubicSpline(points_x, points_y)
+
+    return np.array([x_arr, ppoly(x_arr)]).T

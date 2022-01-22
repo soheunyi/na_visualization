@@ -1,5 +1,4 @@
 import Select from "react-select";
-import _ from "lodash";
 
 export default function SelectBox(props) {
   const onChange = (selectedOption) => {
