@@ -27,6 +27,7 @@ function App() {
   const [animated, setAnimated] = useState<boolean>(false);
   const [pivotalP, setPivotalP] = useState<Point[]>([]);
   const [plotP, setPlotP] = useState<PlotPosition>({ path: [], pivotal: [] });
+  const [dropdownsOpen, setDropdownsOpen] = useState<number>(0);
 
   const absoluteAnimationRef = useRef<AnimationOption>(ABSOLUTE_ANIMATION_OPTIONS[0]);
   const relativeAnimationRef = useRef<AnimationOption>(RELATIVE_ANIMATION_OPTIONS[0]);
@@ -143,9 +144,13 @@ function App() {
     }
   }, [setRelativeAnimationRef]);
 
+  const handleDropdownOpenChange = useCallback((isOpen: boolean) => {
+    setDropdownsOpen(prev => prev + (isOpen ? 1 : -1));
+  }, []);
+
   return (
     <div>
-      <div className="modern-controls-container">
+      <div className={`modern-controls-container ${dropdownsOpen > 0 ? 'modern-controls-container--expanded' : ''}`}>
         <div className="controls-section">
           <ModernToggle
             label="Animation"
@@ -159,6 +164,7 @@ function App() {
             label="Interpolation Method"
             options={INTERPOLATION_OPTIONS}
             onChange={setInterpolationMethod}
+            onOpenChange={handleDropdownOpenChange}
           />
         </div>
         
@@ -169,6 +175,7 @@ function App() {
                 label="Absolute Animation"
                 options={ABSOLUTE_ANIMATION_OPTIONS}
                 onChange={handleAbsoluteAnimationChange}
+                onOpenChange={handleDropdownOpenChange}
               />
               {absoluteAnimationVariableRef.current.length > 0 && (
                 <ModernInputGroup
@@ -184,6 +191,7 @@ function App() {
                 label="Relative Animation"
                 options={RELATIVE_ANIMATION_OPTIONS}
                 onChange={handleRelativeAnimationChange}
+                onOpenChange={handleDropdownOpenChange}
               />
               {relativeAnimationVariableRef.current.length > 0 && (
                 <ModernInputGroup

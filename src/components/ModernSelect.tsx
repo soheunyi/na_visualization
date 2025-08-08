@@ -11,6 +11,7 @@ interface ModernSelectProps {
   options: Option[];
   value?: string;
   onChange: (option: Option) => void;
+  onOpenChange?: (isOpen: boolean) => void;
   className?: string;
 }
 
@@ -19,6 +20,7 @@ const ModernSelect: React.FC<ModernSelectProps> = ({
   options,
   value,
   onChange,
+  onOpenChange,
   className = '',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +32,7 @@ const ModernSelect: React.FC<ModernSelectProps> = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        toggleOpen(false);
       }
     };
 
@@ -42,14 +44,20 @@ const ModernSelect: React.FC<ModernSelectProps> = ({
     setSelectedOption(option);
     setIsOpen(false);
     onChange(option);
+    onOpenChange?.(false);
+  };
+
+  const toggleOpen = (newIsOpen: boolean) => {
+    setIsOpen(newIsOpen);
+    onOpenChange?.(newIsOpen);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      setIsOpen(!isOpen);
+      toggleOpen(!isOpen);
     } else if (e.key === 'Escape') {
-      setIsOpen(false);
+      toggleOpen(false);
     }
   };
 
@@ -59,7 +67,7 @@ const ModernSelect: React.FC<ModernSelectProps> = ({
       <div className="modern-select" ref={dropdownRef}>
         <div
           className={`modern-select__trigger ${isOpen ? 'modern-select__trigger--open' : ''}`}
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => toggleOpen(!isOpen)}
           onKeyDown={handleKeyDown}
           tabIndex={0}
           role="combobox"
