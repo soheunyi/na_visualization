@@ -1,13 +1,14 @@
 import { createRoot } from 'react-dom/client';
 import ReactCursorPosition from 'react-cursor-position';
-import Toggle from './components/toggleSwitch';
+import ModernToggle from './components/ModernToggle';
+import ModernSelect from './components/ModernSelect';
+import ModernInputGroup from './components/ModernInputGroup';
 import _ from 'lodash';
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { positionParser } from './api/parsePoints';
-import SelectBox from './components/selectBox';
-import MultipleInputBox from './components/multipleInputBox';
 
 import './index.css';
+import './styles/modern-ui.css';
 import PositionSetter from './pointSetter';
 
 import emptyArrayIfUndefined from './tools/emptyArrayIfUndefined';
@@ -128,46 +129,72 @@ function App() {
     }
   }, []);
 
+  const handleAbsoluteAnimationChange = useCallback((option: { value: any; label: string }) => {
+    const animationOption = ABSOLUTE_ANIMATION_OPTIONS.find(opt => opt.label === option.label);
+    if (animationOption) {
+      setAbsoluteAnimationRef(animationOption);
+    }
+  }, [setAbsoluteAnimationRef]);
+
+  const handleRelativeAnimationChange = useCallback((option: { value: any; label: string }) => {
+    const animationOption = RELATIVE_ANIMATION_OPTIONS.find(opt => opt.label === option.label);
+    if (animationOption) {
+      setRelativeAnimationRef(animationOption);
+    }
+  }, [setRelativeAnimationRef]);
+
   return (
     <div>
-      <div className="select-container">
-        <Toggle name="Animated?" onChange={setAnimated} />
-        <div id="2nd">
-          <SelectBox
-            name="Absolute Animation"
-            label="absoluteAnimation"
-            options={ABSOLUTE_ANIMATION_OPTIONS}
-            onChange={setAbsoluteAnimationRef}
-          ></SelectBox>
-          <MultipleInputBox
-            inputsInfo={emptyArrayIfUndefined(
-              absoluteAnimationVariableRef.current
-            )}
-            handleInputChange={setAbsoluteAnimationVariableRef}
-          ></MultipleInputBox>
+      <div className="modern-controls-container">
+        <div className="controls-section">
+          <ModernToggle
+            label="Animation"
+            checked={animated}
+            onChange={setAnimated}
+          />
         </div>
-        <div id="3rd">
-          <SelectBox
-            name="Relative Animation"
-            label="relativeAnimation"
-            options={RELATIVE_ANIMATION_OPTIONS}
-            onChange={setRelativeAnimationRef}
-          ></SelectBox>
-          <MultipleInputBox
-            inputsInfo={emptyArrayIfUndefined(
-              relativeAnimationVariableRef.current
-            )}
-            handleInputChange={setRelativeAnimationVariableRef}
-          ></MultipleInputBox>
-        </div>
-        <div id="4th">
-          <SelectBox
-            name="Interpolation Method"
-            label="interpolationMethod"
+        
+        <div className="controls-section">
+          <ModernSelect
+            label="Interpolation Method"
             options={INTERPOLATION_OPTIONS}
             onChange={setInterpolationMethod}
-          ></SelectBox>
+          />
         </div>
+        
+        {animated && (
+          <>
+            <div className="controls-section">
+              <ModernSelect
+                label="Absolute Animation"
+                options={ABSOLUTE_ANIMATION_OPTIONS}
+                onChange={handleAbsoluteAnimationChange}
+              />
+              {absoluteAnimationVariableRef.current.length > 0 && (
+                <ModernInputGroup
+                  title="Parameters"
+                  inputs={absoluteAnimationVariableRef.current}
+                  onChange={setAbsoluteAnimationVariableRef}
+                />
+              )}
+            </div>
+            
+            <div className="controls-section">
+              <ModernSelect
+                label="Relative Animation"
+                options={RELATIVE_ANIMATION_OPTIONS}
+                onChange={handleRelativeAnimationChange}
+              />
+              {relativeAnimationVariableRef.current.length > 0 && (
+                <ModernInputGroup
+                  title="Parameters"
+                  inputs={relativeAnimationVariableRef.current}
+                  onChange={setRelativeAnimationVariableRef}
+                />
+              )}
+            </div>
+          </>
+        )}
       </div>
 
       <ReactCursorPosition style={{ position: "absolute" }}>

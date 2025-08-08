@@ -40,6 +40,11 @@ export interface AnimationOption {
   variable: AnimationVariable[];
 }
 
+export interface SelectOption {
+  value: string;
+  label: string;
+}
+
 export interface InterpolationOption {
   value: string;
   label: string;

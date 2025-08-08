@@ -1,0 +1,132 @@
+/* 3Blue1Brown inspired main UI styles */
+body {
+  margin: 0;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f36 50%, #2a2d47 100%);
+  color: #e8e8e8;
+  overflow: hidden;
+}
+
+#root {
+  height: 100vh;
+  position: relative;
+}
+
+.modern-controls-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 280px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  padding: 20px;
+  background: rgba(10, 14, 39, 0.85);
+  border: 1px solid rgba(74, 144, 226, 0.3);
+  border-radius: 16px;
+  box-shadow: 
+    0 16px 32px rgba(0, 0, 0, 0.4),
+    0 4px 16px rgba(74, 144, 226, 0.1);
+  backdrop-filter: blur(16px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-controls-container:hover {
+  background: rgba(10, 14, 39, 0.9);
+  border-color: rgba(74, 144, 226, 0.4);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.5),
+    0 8px 24px rgba(74, 144, 226, 0.15);
+}
+
+.modern-controls-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modern-controls-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.modern-controls-container::-webkit-scrollbar-thumb {
+  background: rgba(74, 144, 226, 0.5);
+  border-radius: 3px;
+}
+
+.modern-controls-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 144, 226, 0.7);
+}
+
+.controls-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+}
+
+/* Canvas improvements */
+canvas {
+  display: block;
+  cursor: crosshair;
+}
+
+/* Smooth fade-in animation for control sections */
+.controls-section {
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .modern-controls-container {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: none;
+    max-height: 50vh;
+    border-radius: 16px 16px 0 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .controls-section {
+    min-width: 200px;
+  }
+}
+
+/* Focus management */
+.modern-controls-container:focus-within {
+  border-color: rgba(74, 144, 226, 0.6);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.5),
+    0 8px 24px rgba(74, 144, 226, 0.2);
+}
+
+/* Custom selection styles */
+::selection {
+  background: rgba(74, 144, 226, 0.3);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background: rgba(74, 144, 226, 0.3);
+  color: #ffffff;
+}

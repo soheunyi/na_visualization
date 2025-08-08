@@ -1,0 +1,111 @@
+/* 3Blue1Brown inspired input group */
+.modern-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(74, 144, 226, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-input-group:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(74, 144, 226, 0.3);
+}
+
+.modern-input-group__title {
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e8e8e8;
+  margin: 0 0 8px 0;
+  letter-spacing: 0.025em;
+}
+
+.modern-input-group__inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modern-input-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modern-input-label {
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #c0c0c0;
+  margin: 0;
+  flex: 1;
+  text-align: left;
+}
+
+.modern-number-input {
+  width: 80px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(74, 144, 226, 0.3);
+  border-radius: 6px;
+  color: #e8e8e8;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-number-input:focus {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3);
+}
+
+.modern-number-input:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(74, 144, 226, 0.4);
+}
+
+/* Custom checkbox */
+.modern-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-checkbox:focus-visible {
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.4);
+  border-radius: 4px;
+}
+
+.modern-checkbox__box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(74, 144, 226, 0.3);
+  border-radius: 4px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #4a90e2;
+}
+
+.modern-checkbox:hover .modern-checkbox__box {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(74, 144, 226, 0.5);
+}
+
+.modern-checkbox--checked .modern-checkbox__box {
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  border-color: #4a90e2;
+  color: #ffffff;
+}
