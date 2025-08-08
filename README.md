@@ -2,6 +2,29 @@
 The result of this project is uploaded on [my Github Pages](https://lsdluis1.github.io/na_visualization/).
 Special thanks to [woogenius](https://github.com/woogenius) for his aid when I got stuck, especially with introducing Pyodide to me.
 
+## Recent UI/UX Improvements (2025)
+
+### Modern Control Panel Design
+- **Enhanced Visual Design**: Implemented a modern, 3Blue1Brown-inspired UI with glassmorphic design elements
+- **Improved Accessibility**: Fixed text contrast issues by updating all control text colors from light to dark themes for better readability on the light control panel background
+- **Responsive Layout**: Added proper viewport sizing and responsive canvas dimensions that adapt to screen size
+
+### Smart Dropdown Expansion
+- **Auto-Expanding Panel**: Control panel now automatically expands when dropdowns are opened, ensuring all options are visible without scrolling
+- **Full Option Visibility**: All 9 interpolation methods (Wavy, Linear, Lagrange, Quadratic Spline, Cubic Spline, 4th Spline, 5th Spline, Akima, PCHIP) are now easily accessible
+- **Improved Dropdown Styling**: Updated dropdown backgrounds to match the light theme with proper contrast and enhanced visual feedback
+
+### Technical Modernization
+- **React 18 Migration**: Upgraded from React 17 to React 18 with modern concurrent features
+- **TypeScript Integration**: Added comprehensive TypeScript support for better development experience and type safety
+- **Performance Optimization**: Replaced `setInterval` with `requestAnimationFrame` for smooth 60fps animations
+- **Pyodide Upgrade**: Updated from Pyodide 0.1.1 to 0.25.1 for significant performance improvements
+
+### Developer Experience
+- **Code Quality Tools**: Added ESLint, Prettier, and TypeScript strict mode for better code quality
+- **Modern Architecture**: Implemented proper React hooks patterns, error boundaries, and performance optimizations
+- **Build System**: Updated dependencies and build configuration for modern deployment standards
+
 ## Interpolation Methods
 Currently, there are three interpolation methods supported, which are linear, wavy, lagrange.
 Adding new certain interpolation method should follow the steps below:
