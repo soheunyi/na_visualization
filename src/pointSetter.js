@@ -11,10 +11,25 @@ export default function PositionSetter(props) {
   };
 
   const [animationFrameCount, setAnimationFrameCount] = useState(0);
+  const [dimensions, setDimensions] = useState({ width: 1280, height: 720 });
 
   const { animated, absoluteAnimation, relativeAnimation, lineWidth, style } =
     props;
   const { pointSize } = style;
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (animated) {
@@ -45,7 +60,7 @@ export default function PositionSetter(props) {
             animationFrameCount={animationFrameCount}
             handleDrag={props.handleDrag}
             point={point}
-            pointStyle={{ pointSize: 10, color: "yellow" }}
+            pointStyle={{ pointSize: 10, color: "#f472b6" }}
           />
         );
       })}
@@ -53,9 +68,9 @@ export default function PositionSetter(props) {
         draw={drawFunctionPoints}
         pathPoints={props.plotPoints.path}
         points={props.plotPoints.pivotal}
-        lineStyle={{ color: "black", width: lineWidth }}
-        pointStyle={{ color: "red", pointSize: pointSize }}
-        canvasStyle={{ width: 7200, height: 4000 }}
+        lineStyle={{ color: "#000000", width: lineWidth }}
+        pointStyle={{ color: "#06b6d4", pointSize: pointSize }}
+        canvasStyle={{ width: dimensions.width, height: dimensions.height }}
       />
     </div>
   );

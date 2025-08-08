@@ -149,7 +149,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
       <div className={`modern-controls-container ${dropdownsOpen > 0 ? 'modern-controls-container--expanded' : ''}`}>
         <div className="controls-section">
           <ModernToggle
@@ -205,7 +205,7 @@ function App() {
         )}
       </div>
 
-      <ReactCursorPosition style={{ position: "absolute" }}>
+      <ReactCursorPosition style={{ position: "absolute", width: '100%', height: '100%' }}>
         <PositionSetter
           style={{ pointSize: 10, lineWidth: 5 }}
           animated={animated}

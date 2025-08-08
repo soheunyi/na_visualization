@@ -1,16 +1,22 @@
 /* 3Blue1Brown inspired main UI styles */
-body {
+html, body {
+  height: 100%;
   margin: 0;
+  padding: 0;
+}
+
+body {
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f36 50%, #2a2d47 100%);
-  color: #e8e8e8;
+  background: linear-gradient(135deg, #f8e8ff 0%, #e8f4fd 50%, #fff0e8 100%);
+  color: #6b7280;
   overflow: hidden;
 }
 
 #root {
   height: 100vh;
+  width: 100vw;
   position: relative;
 }
 
@@ -24,33 +30,34 @@ body {
   gap: 16px;
   max-width: 280px;
   max-height: calc(100vh - 40px);
-  overflow-y: auto;
+  overflow-y: visible;
   padding: 20px;
-  background: rgba(10, 14, 39, 0.85);
-  border: 1px solid rgba(74, 144, 226, 0.3);
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(203, 213, 225, 0.4);
   border-radius: 16px;
   box-shadow: 
-    0 16px 32px rgba(0, 0, 0, 0.4),
-    0 4px 16px rgba(74, 144, 226, 0.1);
+    0 16px 32px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(139, 92, 246, 0.1);
   backdrop-filter: blur(16px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #000000;
 }
 
 .modern-controls-container:hover {
-  background: rgba(10, 14, 39, 0.9);
-  border-color: rgba(74, 144, 226, 0.4);
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(139, 92, 246, 0.3);
   box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.5),
-    0 8px 24px rgba(74, 144, 226, 0.15);
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 8px 24px rgba(139, 92, 246, 0.15);
 }
 
 .modern-controls-container--expanded {
-  max-height: calc(80vh - 40px);
-  background: rgba(10, 14, 39, 0.95);
-  border-color: rgba(74, 144, 226, 0.5);
+  max-height: calc(95vh - 40px);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(139, 92, 246, 0.4);
   box-shadow: 
-    0 24px 48px rgba(0, 0, 0, 0.6),
-    0 12px 32px rgba(74, 144, 226, 0.2);
+    0 24px 48px rgba(0, 0, 0, 0.2),
+    0 12px 32px rgba(139, 92, 246, 0.2);
   transform: translateY(-10px);
 }
 
@@ -64,12 +71,12 @@ body {
 }
 
 .modern-controls-container::-webkit-scrollbar-thumb {
-  background: rgba(74, 144, 226, 0.5);
+  background: rgba(139, 92, 246, 0.4);
   border-radius: 3px;
 }
 
 .modern-controls-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(74, 144, 226, 0.7);
+  background: rgba(139, 92, 246, 0.6);
 }
 
 .controls-section {
