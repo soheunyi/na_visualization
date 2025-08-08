@@ -1,5 +1,5 @@
 # Numerical Analysis Visualization
-The result of this project is uploaded on [my Github Pages](https://lsdluis1.github.io/na_visualization/).
+The result of this project is uploaded on [my Github Pages](https://soheunyi.github.io/na_visualization/).
 Special thanks to [woogenius](https://github.com/woogenius) for his aid when I got stuck, especially with introducing Pyodide to me.
 
 ## Recent UI/UX Improvements (2025)
