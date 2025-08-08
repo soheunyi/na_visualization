@@ -10,6 +10,15 @@ const drawFunctionPoints = (ctx, points, style) => {
   points.sort(sort_function);
 
   if (points.length > 1) {
+    // Save current context state
+    ctx.save();
+    
+    // Add shadow effects for line segments
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+    ctx.shadowBlur = 6;
+    ctx.shadowOffsetX = 1;
+    ctx.shadowOffsetY = 1;
+    
     ctx.beginPath();
     points.map((point, index) => {
       if (index >= points.length - 1) {
@@ -22,6 +31,9 @@ const drawFunctionPoints = (ctx, points, style) => {
     ctx.strokeStyle = color;
     ctx.lineWidth = width;
     ctx.stroke();
+    
+    // Restore context state
+    ctx.restore();
   }
 };
 

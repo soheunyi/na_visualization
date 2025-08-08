@@ -45,13 +45,13 @@ body {
 }
 
 .modern-controls-container--expanded {
-  min-width: 320px;
+  max-height: calc(80vh - 40px);
   background: rgba(10, 14, 39, 0.95);
   border-color: rgba(74, 144, 226, 0.5);
   box-shadow: 
     0 24px 48px rgba(0, 0, 0, 0.6),
     0 12px 32px rgba(74, 144, 226, 0.2);
-  transform: translateX(-10px);
+  transform: translateY(-10px);
 }
 
 .modern-controls-container::-webkit-scrollbar {

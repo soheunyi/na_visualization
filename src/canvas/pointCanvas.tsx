@@ -9,11 +9,27 @@ function drawCoordinates(
   pointStyle: PointStyle
 ) {
   const { color = '#ff2626', pointSize = 10 } = pointStyle;
+  
+  // Save current context state
+  ctx.save();
+  
+  // Draw shadow
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+  ctx.shadowBlur = 8;
+  ctx.shadowOffsetX = 2;
+  ctx.shadowOffsetY = 2;
+  
   ctx.beginPath();
   ctx.fillStyle = color;
   ctx.arc(x, y, pointSize, 0, 2 * Math.PI);
   ctx.fill();
+  
+  // Reset shadow for stroke to avoid double shadow
+  ctx.shadowColor = 'transparent';
   ctx.stroke();
+  
+  // Restore context state
+  ctx.restore();
 }
 
 interface PointCanvasProps {
