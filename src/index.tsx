@@ -131,7 +131,7 @@ function App() {
   return (
     <div>
       <div className="select-container">
-        <Toggle id="1st" name="Animated?" onToggle={setAnimated} />
+        <Toggle name="Animated?" onChange={setAnimated} />
         <div id="2nd">
           <SelectBox
             name="Absolute Animation"
