@@ -1,5 +1,5 @@
 const drawFunctionPoints = (ctx, points, style) => {
-  const { color = "black", width = 1 } = style;
+  const { color = 'black', width = 1 } = style;
 
   function sort_function(a, b) {
     if (a.x > b.x) return 1;

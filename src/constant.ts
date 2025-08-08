@@ -1,10 +1,11 @@
-import brownianMotion from "./animations/absoluteAnimations/brownianMotion";
-import linear from "./animations/absoluteAnimations/linear";
-import circular from "./animations/relativeAnimations/circular";
+import brownianMotion from './animations/absoluteAnimations/brownianMotion';
+import linear from './animations/absoluteAnimations/linear';
+import circular from './animations/relativeAnimations/circular';
+import { AnimationOption, InterpolationOption } from './types';
 
 export const SCAN_RATE = 60;
 
-export const ABSOLUTE_ANIMATION_OPTIONS = [
+export const ABSOLUTE_ANIMATION_OPTIONS: AnimationOption[] = [
   { value: () => () => ({ x: 0, y: 0 }), label: "None", variable: [] },
   {
     value: brownianMotion,
@@ -21,7 +22,7 @@ export const ABSOLUTE_ANIMATION_OPTIONS = [
   },
 ];
 
-export const RELATIVE_ANIMATION_OPTIONS = [
+export const RELATIVE_ANIMATION_OPTIONS: AnimationOption[] = [
   { value: () => () => ({ x: 0, y: 0 }), label: "None", variable: [] },
   {
     value: circular,
@@ -34,7 +35,7 @@ export const RELATIVE_ANIMATION_OPTIONS = [
   },
 ];
 
-export const INTERPOLATION_OPTIONS = [
+export const INTERPOLATION_OPTIONS: InterpolationOption[] = [
   { value: "wavy", label: "Wavy" },
   { value: "linear", label: "Linear" },
   { value: "lagrange", label: "Lagrange" },

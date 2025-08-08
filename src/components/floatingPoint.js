@@ -1,7 +1,7 @@
-import React, { useMemo, useEffect, useRef, useState } from "react";
-import Draggable from "react-draggable";
-import addPosition from "../tools/addPosition";
-import originIfUndefined from "../tools/originIfUndefined";
+import React, { useMemo, useEffect, useRef, useState } from 'react';
+import Draggable from 'react-draggable';
+import addPosition from '../tools/addPosition';
+import originIfUndefined from '../tools/originIfUndefined';
 
 export default function FloatingPoint(props) {
   const initialPosition = useMemo(() => props.point.position, []);
@@ -84,12 +84,12 @@ export default function FloatingPoint(props) {
       <div
         className="drag-wrapper"
         style={{
-          position: "absolute",
+          position: 'absolute',
           left: initialPosition.x + animationDisplacement.x - pointSize,
           top: initialPosition.y + animationDisplacement.y - pointSize,
           width: 2 * pointSize,
           height: 2 * pointSize,
-          borderRadius: "100%",
+          borderRadius: '100%',
           background: color,
           opacity: 0,
         }}

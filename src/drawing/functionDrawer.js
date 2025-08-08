@@ -1,1 +1,1 @@
-import drawFunctionPoints from "./drawFunctionPoints";
+import drawFunctionPoints from './drawFunctionPoints';

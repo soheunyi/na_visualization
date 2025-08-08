@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 
-const CronCanvas = (props) => {
+const CronCanvas = props => {
   const canvasRef = useRef(null);
   const { draw, ...rest } = props;
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext('2d');
     let frameCount = 0;
     let animationFrameId;
 

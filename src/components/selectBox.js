@@ -1,7 +1,7 @@
-import Select from "react-select";
+import Select from 'react-select';
 
 export default function SelectBox(props) {
-  const onChange = (selectedOption) => {
+  const onChange = selectedOption => {
     props.onChange(selectedOption);
   };
 

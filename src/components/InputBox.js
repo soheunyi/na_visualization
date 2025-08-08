@@ -1,7 +1,7 @@
 export default function InputBox(props) {
-  const handleCheckboxChange = (event) => {
+  const handleCheckboxChange = event => {
     const target = event.target;
-    if (target.type === "checkbox") {
+    if (target.type === 'checkbox') {
       props.handleInputChange({
         name: target.name,
         value: !target.checked,
@@ -10,10 +10,10 @@ export default function InputBox(props) {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
     const inputElement = document.getElementById(
-      props.name.concat("-input-form")
+      props.name.concat('-input-form')
     );
 
     props.handleInputChange({
@@ -24,12 +24,12 @@ export default function InputBox(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ padding: "1%" }}>
+    <form onSubmit={handleSubmit} style={{ padding: '1%' }}>
       <label>
         {props.name}
         <br />
         <input
-          id={props.name.concat("-input-form")}
+          id={props.name.concat('-input-form')}
           type={props.type}
           name={props.name}
           onChange={handleCheckboxChange}
